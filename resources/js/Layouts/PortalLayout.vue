@@ -46,7 +46,11 @@ function handleKeydown(event) {
 }
 
 function logout() {
-  router.post(route('logout'))
+  router.post(route('logout'), {}, {
+    onSuccess: () => {
+      window.close()
+    },
+  })
 }
 
 onMounted(() => {
