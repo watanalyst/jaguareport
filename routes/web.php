@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Relatórios - com auto-login via ScriptCase
+// Relatórios - auto-login via ScriptCase
 Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(function () {
 
     // Financeiro
