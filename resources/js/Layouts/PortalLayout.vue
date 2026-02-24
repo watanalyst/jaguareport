@@ -8,7 +8,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 const page = usePage()
 const nav = page.props.navigation || []
 const user = computed(() => page.props.auth?.user)
-const sidebarOpen = ref(true)
+const sidebarOpen = ref(localStorage.getItem('sidebarOpen') !== 'false')
 const menuOpen = ref(false)
 
 const userInitials = computed(() => {
@@ -26,6 +26,7 @@ function isActive(routeName) {
 
 function toggleSidebar() {
   sidebarOpen.value = !sidebarOpen.value
+  localStorage.setItem('sidebarOpen', sidebarOpen.value)
 }
 
 function toggleMenu(e) {
