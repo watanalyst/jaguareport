@@ -16,7 +16,7 @@ const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite'
       <h2 class="text-sm font-semibold text-gray-700">Painel</h2>
     </template>
 
-    <div class="flex flex-1 items-center justify-center" style="min-height: calc(100vh - 140px)">
+    <div class="flex flex-1 items-start justify-center pt-24">
       <!-- Card no padrão dos relatórios -->
       <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)]">
         <div class="h-1.5" style="background: linear-gradient(to right, #0A1E44, #093F87, #1565C0)" />

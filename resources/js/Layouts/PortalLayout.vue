@@ -162,6 +162,9 @@ onBeforeUnmount(() => {
             </span>
           </Link>
 
+          <!-- Separador entre Painel e seções (sidebar colapsado) -->
+          <div v-if="!sidebarOpen" class="mx-2 my-2 border-t border-white/10" />
+
           <div v-for="(section, index) in nav" :key="section.key || section.title">
 
             <!-- Section header (expanded sidebar) -->
@@ -193,7 +196,7 @@ onBeforeUnmount(() => {
               class="grid transition-[grid-template-rows] duration-200 ease-out"
               :style="{ gridTemplateRows: (!sidebarOpen || sectionExpanded[section.key || section.title]) ? '1fr' : '0fr' }"
             >
-              <div class="overflow-hidden">
+              <div :class="sidebarOpen ? 'overflow-hidden' : ''">
                 <div class="space-y-1">
                   <Link
                     v-for="item in section.items"
