@@ -1,30 +1,35 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import PortalLayout from '@/Layouts/PortalLayout.vue'
+import { Head, usePage } from '@inertiajs/vue3'
+
+const user = usePage().props.auth?.user
 </script>
 
 <template>
-    <Head title="Dashboard" />
+  <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
-            >
-                Dashboard
-            </h2>
-        </template>
+  <PortalLayout>
+    <template #header>
+      <h2 class="text-sm font-semibold text-gray-700">Dashboard</h2>
+    </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
-                >
-                    <div class="p-6 text-gray-900">
-                        You're logged in!
-                    </div>
-                </div>
-            </div>
+    <div class="flex flex-1 items-center justify-center" style="min-height: calc(100vh - 140px)">
+      <div class="text-center">
+        <div
+          class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl text-white text-2xl font-bold shadow-lg"
+          style="background: linear-gradient(135deg, #0A1E44, #093F87)"
+        >
+          JR
         </div>
-    </AuthenticatedLayout>
+
+        <h1 class="text-2xl font-bold text-gray-800">
+          Bem-vindo ao <span style="color: #093F87">JaguáReport</span><span v-if="user">, {{ user.name.split(' ')[0] }}</span>!
+        </h1>
+
+        <p class="mt-2 text-gray-500">
+          Selecione um relatório no menu lateral para começar.
+        </p>
+      </div>
+    </div>
+  </PortalLayout>
 </template>
