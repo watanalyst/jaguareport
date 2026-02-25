@@ -52,6 +52,7 @@ class HandleInertiaRequests extends Middleware
             }
 
             $section = [
+                'key'   => $moduleKey,
                 'title' => $module['label'],
                 'items' => [],
             ];
