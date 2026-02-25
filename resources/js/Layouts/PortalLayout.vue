@@ -116,8 +116,9 @@ onBeforeUnmount(() => {
         <div class="pointer-events-none absolute inset-0 opacity-30" style="background: radial-gradient(ellipse at 50% 0%, rgba(9,63,135,0.3) 0%, transparent 70%)" />
 
         <!-- Brand -->
-        <div
-          class="relative flex h-14 items-center justify-center"
+        <Link
+          :href="route('dashboard')"
+          class="relative flex h-14 items-center justify-center cursor-pointer"
           style="background: linear-gradient(180deg, rgba(9,63,135,0.18) 0%, transparent 100%); box-shadow: inset 0 -1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.25)"
         >
           <span v-if="sidebarOpen" class="text-[22px] font-black text-white tracking-tight whitespace-nowrap drop-shadow-[0_0_10px_rgba(21,101,192,0.4)]">
@@ -126,7 +127,7 @@ onBeforeUnmount(() => {
           <span v-else class="text-lg font-black text-white drop-shadow-[0_0_8px_rgba(21,101,192,0.4)]">
             J<span class="text-primary-light">R</span>
           </span>
-        </div>
+        </Link>
 
         <!-- Navigation -->
         <nav class="relative flex-1 py-4 space-y-0" :class="sidebarOpen ? 'px-3' : 'px-1'">
