@@ -1,6 +1,6 @@
 <script setup>
 import { Link, usePage, router } from '@inertiajs/vue3'
-import { DocumentTextIcon, FolderIcon } from '@heroicons/vue/24/outline'
+import { DocumentTextIcon, FolderIcon, HomeIcon } from '@heroicons/vue/24/outline'
 import { Bars3Icon, ChevronDownIcon } from '@heroicons/vue/24/solid'
 import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
 import { ref, computed, reactive, onMounted, onBeforeUnmount, watch } from 'vue'
@@ -131,6 +131,37 @@ onBeforeUnmount(() => {
 
         <!-- Navigation -->
         <nav class="relative flex-1 py-4 space-y-0" :class="sidebarOpen ? 'px-3' : 'px-1'">
+          <!-- Painel header -->
+          <Link
+            v-if="sidebarOpen"
+            :href="route('dashboard')"
+            class="flex w-full items-center gap-2 rounded-md px-3 py-1.5 mb-1
+                   text-[11px] font-bold uppercase tracking-widest
+                   hover:text-gray-200 hover:bg-white/5 transition-colors duration-150"
+            :class="page.url === '/' ? 'text-white' : 'text-gray-300/80'"
+          >
+            <HomeIcon class="h-3.5 w-3.5" />
+            Painel
+          </Link>
+          <Link
+            v-else
+            :href="route('dashboard')"
+            class="group relative flex items-center justify-center rounded-lg py-2.5 mb-2 transition-all duration-200"
+            :class="page.url === '/' ? 'bg-white/15 text-white' : 'text-gray-300 hover:bg-white/10 hover:text-white'"
+          >
+            <div
+              v-if="page.url === '/'"
+              class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary-light shadow-[0_0_8px_rgba(21,101,192,0.6)]"
+            />
+            <HomeIcon class="h-5 w-5 flex-shrink-0" />
+            <span
+              class="absolute left-full ml-3 whitespace-nowrap text-white text-xs py-1.5 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 pointer-events-none"
+              style="background: #0A1E44"
+            >
+              Painel
+            </span>
+          </Link>
+
           <div v-for="(section, index) in nav" :key="section.key || section.title">
 
             <!-- Section header (expanded sidebar) -->
