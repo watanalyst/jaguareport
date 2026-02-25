@@ -4,16 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-// Redireciona para o portal de relatórios (preserva sc_user no redirect)
 Route::get('/', function () {
-    $params = request()->only('sc_user');
-    return redirect()->route('relatorios.financeiro.comissao', $params);
-})->middleware('sc.auth');
-
-Route::get('/dashboard', function () {
-    return redirect()->route('relatorios.financeiro.comissao');
-})->name('dashboard');
+    return Inertia::render('Dashboard');
+})->middleware('sc.auth')->name('dashboard');
 
 // Profile (Breeze) - protegido por auth
 Route::middleware('auth')->group(function () {
