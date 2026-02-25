@@ -8,7 +8,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 const page = usePage()
 const nav = page.props.navigation || []
 const user = computed(() => page.props.auth?.user)
-const sidebarOpen = ref(true)
+const sidebarOpen = ref(localStorage.getItem('sidebarOpen') !== 'false')
 const menuOpen = ref(false)
 
 const userInitials = computed(() => {
@@ -26,6 +26,7 @@ function isActive(routeName) {
 
 function toggleSidebar() {
   sidebarOpen.value = !sidebarOpen.value
+  localStorage.setItem('sidebarOpen', sidebarOpen.value)
 }
 
 function toggleMenu(e) {
@@ -184,7 +185,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="text-left hidden sm:block">
               <span class="font-semibold text-sm text-gray-800 block leading-tight">{{ user.name }}</span>
-              <span class="text-[11px] text-gray-400 block leading-tight">{{ user.email }}</span>
+              <span class="text-[11px] text-gray-400 block leading-tight">{{ user.sc_user }}</span>
             </div>
             <ChevronDownIcon
               class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200 ml-1"
@@ -216,7 +217,7 @@ onBeforeUnmount(() => {
                 </div>
                 <div class="min-w-0">
                   <p class="text-sm font-semibold text-gray-800 truncate">{{ user.name }}</p>
-                  <p class="text-xs text-gray-400 mt-0.5">{{ user.email }}</p>
+                  <p class="text-xs text-gray-400 mt-0.5">{{ user.sc_user }}</p>
                 </div>
               </div>
 

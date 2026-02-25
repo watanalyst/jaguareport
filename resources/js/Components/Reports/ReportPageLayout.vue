@@ -38,7 +38,7 @@ const flash = usePage().props.flash || {}
     </div>
 
     <!-- Card principal -->
-    <div class="max-w-3xl overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)]">
+    <div class="overflow-hidden rounded-2xl bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)]">
       <!-- Accent bar -->
       <div class="h-1.5" style="background: linear-gradient(to right, #0A1E44, #093F87, #1565C0)" />
 

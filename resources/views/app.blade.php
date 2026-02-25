@@ -6,6 +6,9 @@
 
     <title inertia>{{ config('app.name', 'Jaguareport') }}</title>
 
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+    <link rel="apple-touch-icon" href="/img/logo_jagua.png">
+
     @routes
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @inertiaHead
