@@ -16,6 +16,10 @@ const flash = usePage().props.flash || {}
   <Head :title="title" />
 
   <PortalLayout>
+    <template #header>
+      <h2 class="text-sm font-semibold text-gray-700">Financeiro</h2>
+    </template>
+
     <!-- Header / Breadcrumb -->
     <div class="mb-6">
       <div class="flex items-center gap-1 text-sm text-gray-400 mb-2">
