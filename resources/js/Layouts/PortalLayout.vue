@@ -3,7 +3,7 @@ import { Link, usePage, router } from '@inertiajs/vue3'
 import { DocumentTextIcon, FolderIcon } from '@heroicons/vue/24/outline'
 import { Bars3Icon, ChevronDownIcon } from '@heroicons/vue/24/solid'
 import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, reactive, onMounted, onBeforeUnmount, watch } from 'vue'
 
 const page = usePage()
 const nav = page.props.navigation || []
@@ -23,6 +23,41 @@ function isActive(routeName) {
   const path = route(routeName, undefined, false)
   return page.url === path || page.url.startsWith(path + '/')
 }
+
+// --- Section collapse state ---
+const SECTIONS_KEY = 'sidebarSections'
+
+function loadSectionState() {
+  try { return JSON.parse(localStorage.getItem(SECTIONS_KEY)) || {} }
+  catch { return {} }
+}
+
+const sectionExpanded = reactive((() => {
+  const saved = loadSectionState()
+  const state = {}
+  for (const section of nav) {
+    const key = section.key || section.title
+    // Auto-expand if contains active route, otherwise use saved state (default: expanded)
+    const hasActive = section.items.some(item => isActive(item.routeName))
+    state[key] = hasActive ? true : (key in saved ? saved[key] : true)
+  }
+  return state
+})())
+
+function toggleSection(key) {
+  sectionExpanded[key] = !sectionExpanded[key]
+  localStorage.setItem(SECTIONS_KEY, JSON.stringify({ ...sectionExpanded }))
+}
+
+watch(() => page.url, () => {
+  for (const section of nav) {
+    const key = section.key || section.title
+    if (section.items.some(item => isActive(item.routeName))) {
+      sectionExpanded[key] = true
+      localStorage.setItem(SECTIONS_KEY, JSON.stringify({ ...sectionExpanded }))
+    }
+  }
+})
 
 function toggleSidebar() {
   sidebarOpen.value = !sidebarOpen.value
@@ -94,48 +129,75 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Navigation -->
-        <nav class="relative flex-1 py-4 space-y-5" :class="sidebarOpen ? 'px-3' : 'px-1'">
-          <div v-for="section in nav" :key="section.title">
-            <!-- Section title (only when expanded) -->
-            <div v-if="sidebarOpen" class="mb-2 flex items-center gap-2 px-3 text-[11px] font-bold uppercase tracking-widest text-gray-300/80">
-              <FolderIcon class="h-3.5 w-3.5" />
-              {{ section.title }}
-            </div>
+        <nav class="relative flex-1 py-4 space-y-0" :class="sidebarOpen ? 'px-3' : 'px-1'">
+          <div v-for="(section, index) in nav" :key="section.key || section.title">
 
-            <div class="space-y-1">
-              <Link
-                v-for="item in section.items"
-                :key="item.routeName"
-                :href="route(item.routeName)"
-                prefetch
-                class="group relative flex items-center rounded-lg text-sm font-medium transition-all duration-200"
-                :class="[
-                  sidebarOpen ? 'gap-3 py-2.5 px-4' : 'justify-center py-2.5',
-                  isActive(item.routeName)
-                    ? 'bg-white/15 text-white'
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                ]"
-              >
-                <!-- Active indicator -->
-                <div
-                  v-if="isActive(item.routeName)"
-                  class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary-light shadow-[0_0_8px_rgba(21,101,192,0.6)]"
-                />
+            <!-- Section header (expanded sidebar) -->
+            <button
+              v-if="sidebarOpen"
+              type="button"
+              @click="toggleSection(section.key || section.title)"
+              class="flex w-full items-center justify-between rounded-md px-3 py-1.5
+                     text-[11px] font-bold uppercase tracking-widest text-gray-300/80
+                     hover:text-gray-200 hover:bg-white/5 transition-colors duration-150
+                     focus:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
+              :class="index > 0 ? 'mt-4 mb-1' : 'mb-1'"
+            >
+              <span class="flex items-center gap-2">
+                <FolderIcon class="h-3.5 w-3.5" />
+                {{ section.title }}
+              </span>
+              <ChevronDownIcon
+                class="h-3 w-3 transition-transform duration-200"
+                :class="sectionExpanded[section.key || section.title] ? '' : '-rotate-90'"
+              />
+            </button>
 
-                <DocumentTextIcon class="h-5 w-5 flex-shrink-0" />
+            <!-- Collapsed sidebar: separator between sections -->
+            <div v-if="!sidebarOpen && index > 0" class="mx-2 my-2 border-t border-white/10" />
 
-                <!-- Label (expanded) -->
-                <span v-if="sidebarOpen" class="truncate">{{ item.label }}</span>
+            <!-- Section items with CSS grid height transition -->
+            <div
+              class="grid transition-[grid-template-rows] duration-200 ease-out"
+              :style="{ gridTemplateRows: (!sidebarOpen || sectionExpanded[section.key || section.title]) ? '1fr' : '0fr' }"
+            >
+              <div class="overflow-hidden">
+                <div class="space-y-1">
+                  <Link
+                    v-for="item in section.items"
+                    :key="item.routeName"
+                    :href="route(item.routeName)"
+                    prefetch
+                    class="group relative flex items-center rounded-lg text-sm font-medium transition-all duration-200"
+                    :class="[
+                      sidebarOpen ? 'gap-3 py-2.5 px-4' : 'justify-center py-2.5',
+                      isActive(item.routeName)
+                        ? 'bg-white/15 text-white'
+                        : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                    ]"
+                  >
+                    <!-- Active indicator -->
+                    <div
+                      v-if="isActive(item.routeName)"
+                      class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary-light shadow-[0_0_8px_rgba(21,101,192,0.6)]"
+                    />
 
-                <!-- Tooltip (collapsed) -->
-                <span
-                  v-else
-                  class="absolute left-full ml-3 whitespace-nowrap text-white text-xs py-1.5 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 pointer-events-none"
-                  style="background: #0A1E44"
-                >
-                  {{ item.label }}
-                </span>
-              </Link>
+                    <DocumentTextIcon class="h-5 w-5 flex-shrink-0" />
+
+                    <!-- Label (expanded) -->
+                    <span v-if="sidebarOpen" class="truncate">{{ item.label }}</span>
+
+                    <!-- Tooltip (collapsed) -->
+                    <span
+                      v-else
+                      class="absolute left-full ml-3 whitespace-nowrap text-white text-xs py-1.5 px-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 z-50 pointer-events-none"
+                      style="background: #0A1E44"
+                    >
+                      {{ item.label }}
+                    </span>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </nav>
