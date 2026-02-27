@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Repositories\Logix\PermissionRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -34,15 +36,17 @@ class HandleInertiaRequests extends Middleware
             'auth' => fn () => [
                 'user' => $request->user(),
             ],
-            'navigation' => $this->buildNavigation(),
+            'navigation' => fn () => $this->buildNavigation($request),
             'flash' => [
                 'error' => fn () => $request->session()->get('error'),
             ],
         ];
     }
 
-    private function buildNavigation(): array
+    private function buildNavigation(Request $request): array
     {
+        $allowedApps = $this->getUserPermissions($request);
+
         $nav = [];
         $reports = config('reports', []);
 
@@ -62,6 +66,11 @@ class HandleInertiaRequests extends Middleware
                     continue;
                 }
 
+                $appName = $report['app_name'] ?? null;
+                if (!$appName || !$allowedApps->contains($appName)) {
+                    continue;
+                }
+
                 $section['items'][] = [
                     'label'     => $report['label'],
                     'routeName' => $report['route'],
@@ -74,5 +83,33 @@ class HandleInertiaRequests extends Middleware
         }
 
         return $nav;
+    }
+
+    private function getUserPermissions(Request $request): \Illuminate\Support\Collection
+    {
+        $user = $request->user();
+        if (!$user || !$user->sc_user) {
+            Log::debug('[Permissions] No user or sc_user');
+            return collect();
+        }
+
+        $cacheKey = 'user_permissions';
+        if (session()->has($cacheKey)) {
+            $cached = collect(session($cacheKey));
+            Log::debug('[Permissions] From cache for ' . $user->sc_user, ['permissions' => $cached->all()]);
+            return $cached;
+        }
+
+        try {
+            $permissions = app(PermissionRepository::class)->getAccessibleApps($user->sc_user);
+        } catch (\Throwable $e) {
+            Log::error('[Permissions] Oracle error: ' . $e->getMessage());
+            $permissions = collect();
+        }
+
+        Log::debug('[Permissions] From Oracle for ' . $user->sc_user, ['permissions' => $permissions->all()]);
+        session([$cacheKey => $permissions->all()]);
+
+        return $permissions;
     }
 }

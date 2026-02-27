@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
+    "@jagua/ui": "file:../jagua-ui",
     "ziggy-js": "^2.6.1"
   }
 }

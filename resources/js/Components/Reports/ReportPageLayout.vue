@@ -5,7 +5,6 @@ import { ChevronRightIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/out
 
 defineProps({
   title: String,
-  codigo: String,
   description: { type: String, default: 'Relatório para simples conferência' },
 })
 

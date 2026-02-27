@@ -20,7 +20,6 @@ class ComissaoController extends Controller
 
         return Inertia::render('Relatorios/Financeiro/Comissao/Index', [
             'title'    => 'Relatório Comissão',
-            'codigo'   => 'FIN-001',
             'filters'  => config('reports.financeiro.comissao.filters'),
             'empresas' => $empresas,
         ]);
