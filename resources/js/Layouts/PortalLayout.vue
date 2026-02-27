@@ -111,18 +111,20 @@ onBeforeUnmount(() => {
         sidebarOpen ? 'w-56 overflow-hidden' : 'w-14 overflow-visible',
       ]"
     >
-      <div class="flex flex-1 flex-col" style="background: linear-gradient(180deg, #071631 0%, #0A1E44 40%, #082040 100%)">
+      <div class="flex flex-1 flex-col border-r border-white/[0.06]" style="background: linear-gradient(180deg, #0B2245 0%, #0E2952 35%, #0A1E44 70%, #081A3A 100%)">
         <!-- Glow overlay -->
-        <div class="pointer-events-none absolute inset-0 opacity-30" style="background: radial-gradient(ellipse at 50% 0%, rgba(9,63,135,0.3) 0%, transparent 70%)" />
+        <div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse at 50% 0%, rgba(21,101,192,0.12) 0%, transparent 60%)" />
+        <!-- Subtle side glow -->
+        <div class="pointer-events-none absolute inset-y-0 right-0 w-px" style="background: linear-gradient(180deg, rgba(21,101,192,0.15) 0%, rgba(21,101,192,0.05) 50%, transparent 100%)" />
 
         <!-- Brand -->
         <Link
           :href="route('dashboard')"
           class="relative flex h-14 items-center justify-center cursor-pointer"
-          style="background: linear-gradient(180deg, rgba(9,63,135,0.18) 0%, transparent 100%); box-shadow: inset 0 -1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.25)"
+          style="background: linear-gradient(180deg, rgba(21,101,192,0.12) 0%, rgba(9,63,135,0.06) 60%, transparent 100%); box-shadow: inset 0 -1px 0 rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.2)"
         >
           <span v-if="sidebarOpen" class="text-[22px] font-black text-white tracking-tight whitespace-nowrap drop-shadow-[0_0_10px_rgba(21,101,192,0.4)]">
-            Jagua<span class="text-primary-light">report</span>
+            Jaguá<span class="text-primary-light">Report</span>
           </span>
           <span v-else class="text-lg font-black text-white drop-shadow-[0_0_8px_rgba(21,101,192,0.4)]">
             J<span class="text-primary-light">R</span>
@@ -238,9 +240,9 @@ onBeforeUnmount(() => {
         </nav>
 
         <!-- Footer -->
-        <div class="relative border-t border-white/10 px-4 py-3 text-center">
-          <span v-if="sidebarOpen" class="text-[10px] tracking-wider text-gray-500/50">Jaguareport v1.0</span>
-          <span v-else class="text-[10px] tracking-wider text-gray-500/50">v1.0</span>
+        <div class="relative border-t border-white/[0.08] px-4 py-3 text-center">
+          <span v-if="sidebarOpen" class="text-[10px] tracking-wider text-gray-400/40">JaguáReport v1.0</span>
+          <span v-else class="text-[10px] tracking-wider text-gray-400/40">v1.0</span>
         </div>
       </div>
     </aside>
