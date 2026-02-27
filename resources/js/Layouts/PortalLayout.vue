@@ -122,7 +122,7 @@ onBeforeUnmount(() => {
           style="background: linear-gradient(180deg, rgba(9,63,135,0.18) 0%, transparent 100%); box-shadow: inset 0 -1px 0 rgba(255,255,255,0.08), 0 2px 8px rgba(0,0,0,0.25)"
         >
           <span v-if="sidebarOpen" class="text-[22px] font-black text-white tracking-tight whitespace-nowrap drop-shadow-[0_0_10px_rgba(21,101,192,0.4)]">
-            Jaguá<span class="text-primary-light">Report</span>
+            Jagua<span class="text-primary-light">report</span>
           </span>
           <span v-else class="text-lg font-black text-white drop-shadow-[0_0_8px_rgba(21,101,192,0.4)]">
             J<span class="text-primary-light">R</span>

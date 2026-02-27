@@ -1,8 +1,11 @@
 <script setup>
 import PortalLayout from '@/Layouts/PortalLayout.vue'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import { Head, usePage } from '@inertiajs/vue3'
 
-const user = usePage().props.auth?.user
+const page = usePage()
+const user = page.props.auth?.user
+const flash = page.props.flash || {}
 const firstName = user?.name?.split(' ')[0] || ''
 const hour = new Date().getHours()
 const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite'
@@ -15,6 +18,12 @@ const greeting = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite'
     <template #header>
       <h2 class="text-sm font-semibold text-gray-700">Painel</h2>
     </template>
+
+    <!-- Flash error -->
+    <div v-if="flash.error" class="mb-4 flex items-center gap-3 rounded-xl bg-red-50 px-4 py-3">
+      <ExclamationTriangleIcon class="h-5 w-5 flex-shrink-0 text-red-500" />
+      <p class="text-sm text-red-700">{{ flash.error }}</p>
+    </div>
 
     <div class="flex flex-1 items-start justify-center pt-24">
       <!-- Card no padrão dos relatórios -->
