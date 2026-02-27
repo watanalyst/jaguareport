@@ -40,10 +40,10 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
 
         Route::get('fechamento-cambio', [FechamentoCambioController::class, 'index'])
             ->name('fechamento_cambio')
-            ->middleware('report.permission:FILTRO_FECHAMENTO_CAMBIO');
+            ->middleware('report.permission:blank_FECHAMENTO_CAMBIO');
         Route::get('fechamento-cambio/gerar', [FechamentoCambioController::class, 'gerar'])
             ->name('fechamento_cambio.gerar')
-            ->middleware('report.permission:FILTRO_FECHAMENTO_CAMBIO');
+            ->middleware('report.permission:blank_FECHAMENTO_CAMBIO');
     });
 });
 

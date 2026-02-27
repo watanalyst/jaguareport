@@ -33,7 +33,7 @@ return [
 
         'fechamento_cambio' => [
             'label'    => 'Fechamento Câmbio',
-            'app_name' => 'FILTRO_FECHAMENTO_CAMBIO',
+            'app_name' => 'blank_FECHAMENTO_CAMBIO',
             'route'    => 'relatorios.financeiro.fechamento_cambio',
             'csv'      => true,
             'filters'  => [
