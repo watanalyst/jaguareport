@@ -1,8 +1,7 @@
 <script setup>
-import InputLabel from '@/Components/InputLabel.vue'
-import InputError from '@/Components/InputError.vue'
+import { InputLabel, InputError } from '@jagua/ui'
 import RadioGroup from './RadioGroup.vue'
-import { ArrowDownTrayIcon, CheckCircleIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { ArrowDownTrayIcon, TableCellsIcon, CheckCircleIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -10,6 +9,8 @@ const props = defineProps({
   form: { type: Object, required: true },
   gerarRoute: { type: String, required: true },
   empresas: { type: Array, default: () => [] },
+  lookups: { type: Object, default: () => ({}) },
+  csv: { type: Boolean, default: false },
 })
 
 const loading = ref(false)
@@ -17,13 +18,16 @@ const modalOpen = ref(false)
 const modalStatus = ref('loading') // 'loading' | 'success' | 'error'
 const modalMessage = ref('')
 
-const inputClasses = 'block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-3 text-sm text-gray-700 placeholder-gray-400 transition-all duration-200 focus:border-primary focus:outline-none focus:ring-0 focus:[box-shadow:0_0_0_3px_rgba(9,63,135,0.1)]'
+const inputClasses = 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500'
 
-async function submit() {
+const activeFormat = ref('pdf')
+
+async function submit(format = 'pdf') {
+  activeFormat.value = format
   loading.value = true
   modalOpen.value = true
   modalStatus.value = 'loading'
-  modalMessage.value = 'Gerando relatório, aguarde...'
+  modalMessage.value = format === 'csv' ? 'Gerando CSV, aguarde...' : 'Gerando relatório, aguarde...'
 
   const params = new URLSearchParams()
   Object.entries(props.form).forEach(([key, val]) => {
@@ -31,6 +35,9 @@ async function submit() {
       params.append(key, val)
     }
   })
+  if (format === 'csv') {
+    params.append('format', 'csv')
+  }
 
   try {
     const response = await fetch(`${props.gerarRoute}?${params.toString()}`, {
@@ -85,7 +92,8 @@ async function submit() {
     // Extract filename from Content-Disposition header
     const disposition = response.headers.get('content-disposition') || ''
     const filenameMatch = disposition.match(/filename="?([^";\n]+)"?/)
-    const filename = filenameMatch ? filenameMatch[1] : 'relatorio.pdf'
+    const fallbackName = format === 'csv' ? 'relatorio.csv' : 'relatorio.pdf'
+    const filename = filenameMatch ? filenameMatch[1] : fallbackName
 
     const a = document.createElement('a')
     a.href = url
@@ -121,7 +129,7 @@ function clearFilters() {
 </script>
 
 <template>
-  <form @submit.prevent="submit" class="space-y-6">
+  <form @submit.prevent="submit(activeFormat)" class="space-y-6">
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <div v-for="filter in filters" :key="filter.name">
         <InputLabel :for="filter.name" :value="filter.label" class="mb-1.5" />
@@ -132,25 +140,57 @@ function clearFilters() {
           :id="filter.name"
           type="date"
           v-model="form[filter.name]"
-          :class="inputClasses"
+          class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+          :class="form[filter.name] ? 'text-gray-900' : 'text-gray-400'"
           :required="filter.required"
         />
 
-        <!-- Select (empresa) -->
+        <!-- Select (genérico: lookups → filter.options → empresas fallback) -->
         <select
           v-else-if="filter.type === 'select'"
           :id="filter.name"
           v-model="form[filter.name]"
-          :class="inputClasses"
+          class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+          :class="form[filter.name] === '' || form[filter.name] === null ? 'text-gray-400' : 'text-gray-900'"
+          :required="filter.required"
         >
-          <option value="">Todas</option>
-          <option
-            v-for="emp in empresas"
-            :key="emp.ep"
-            :value="emp.ep"
-          >
-            {{ emp.ep }} - {{ emp.empresa }}
-          </option>
+          <!-- Lookups dinâmicos (do controller) -->
+          <template v-if="lookups[filter.name]">
+            <option value="" class="text-gray-400">{{ filter.placeholder || 'Selecione...' }}</option>
+            <option
+              v-for="opt in lookups[filter.name]"
+              :key="opt.value"
+              :value="opt.value"
+              class="text-gray-900"
+            >
+              {{ opt.label }}
+            </option>
+          </template>
+
+          <!-- Options estáticos (do config) -->
+          <template v-else-if="filter.options">
+            <option
+              v-for="(label, value) in filter.options"
+              :key="value"
+              :value="value"
+              :class="value === '' ? 'text-gray-400' : 'text-gray-900'"
+            >
+              {{ label }}
+            </option>
+          </template>
+
+          <!-- Fallback: empresas (retrocompatível) -->
+          <template v-else>
+            <option value="" class="text-gray-400">Todas</option>
+            <option
+              v-for="emp in empresas"
+              :key="emp.ep"
+              :value="emp.ep"
+              class="text-gray-900"
+            >
+              {{ emp.ep }} - {{ emp.empresa }}
+            </option>
+          </template>
         </select>
 
         <!-- Radio (segmented control) -->
@@ -179,24 +219,41 @@ function clearFilters() {
     <div class="flex items-center gap-3 border-t border-gray-200 pt-6 mt-2">
       <button
         type="submit"
+        @click="activeFormat = 'pdf'"
         :disabled="loading"
-        class="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_0_rgba(9,63,135,0.35)] transition-all duration-200 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+        class="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_0_rgba(9,63,135,0.35)] transition-all duration-200 hover:-translate-y-px hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
         :style="{ background: 'linear-gradient(135deg, #093F87 0%, #0B56B3 100%)' }"
       >
         <!-- Spinner -->
-        <svg v-if="loading" class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+        <svg v-if="loading && activeFormat === 'pdf'" class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
         <ArrowDownTrayIcon v-else class="h-4 w-4" />
-        <span>{{ loading ? 'Gerando...' : 'Gerar PDF' }}</span>
+        <span>{{ loading && activeFormat === 'pdf' ? 'Gerando...' : 'Gerar PDF' }}</span>
+      </button>
+
+      <button
+        v-if="csv"
+        type="submit"
+        @click="activeFormat = 'csv'"
+        :disabled="loading"
+        class="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_0_rgba(21,101,55,0.35)] transition-all duration-200 hover:-translate-y-px hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+        :style="{ background: 'linear-gradient(135deg, #15803d 0%, #16a34a 100%)' }"
+      >
+        <svg v-if="loading && activeFormat === 'csv'" class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+        <TableCellsIcon v-else class="h-4 w-4" />
+        <span>{{ loading && activeFormat === 'csv' ? 'Gerando...' : 'Gerar CSV' }}</span>
       </button>
 
       <button
         type="button"
         @click="clearFilters"
         :disabled="loading"
-        class="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 transition-all duration-200 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 shadow-sm transition-all duration-200 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Limpar filtros
       </button>
