@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'sc.auth' => \App\Http\Middleware\AuthenticateFromScriptcase::class,
+            'report.permission' => \App\Http\Middleware\CheckReportPermission::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

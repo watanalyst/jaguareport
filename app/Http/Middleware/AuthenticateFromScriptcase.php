@@ -13,29 +13,21 @@ class AuthenticateFromScriptcase
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $scUser = $request->query('sc_user');
-
-        if (!$scUser) {
-            // No sc_user param — allow if already authenticated
-            if (Auth::check()) {
-                return $next($request);
+        // If the user is already authenticated, ignore sc_user completely
+        if (Auth::check()) {
+            // Remove sc_user from URL if present
+            if ($request->query('sc_user')) {
+                return redirect($request->url());
             }
 
-            return redirect()->away('about:blank');
-        }
-
-        $currentUser = Auth::user();
-
-        // If already logged in as the same sc_user, skip re-auth
-        if ($currentUser && $currentUser->sc_user === $scUser) {
             return $next($request);
         }
 
-        // Different user or not logged in — switch session
-        if ($currentUser) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        // Not authenticated — try SSO via sc_user
+        $scUser = $request->query('sc_user');
+
+        if (!$scUser) {
+            return redirect()->away('about:blank');
         }
 
         $user = User::firstOrCreate(
@@ -49,6 +41,7 @@ class AuthenticateFromScriptcase
 
         Auth::login($user, remember: true);
 
-        return $next($request);
+        // Redirect without sc_user in the URL to avoid leaking it in logs/history
+        return redirect($request->url());
     }
 }

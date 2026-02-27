@@ -6,9 +6,9 @@ return [
         'label' => 'Financeiro',
 
         'comissao' => [
-            'label'  => 'Comissão',
-            'codigo' => 'FIN-001',
-            'route'  => 'relatorios.financeiro.comissao',
+            'label'    => 'Comissão',
+            'app_name' => 'blank_COMISSOES',
+            'route'    => 'relatorios.financeiro.comissao',
             'filters' => [
                 ['name' => 'ep',         'label' => 'Empresa',                'type' => 'select', 'required' => false],
                 ['name' => 'repres_ini', 'label' => 'Representante Inicial',  'type' => 'text',   'required' => true],
@@ -22,9 +22,9 @@ return [
         ],
 
         'comissao_redeconomia' => [
-            'label'  => 'Comissão Redeconomia',
-            'codigo' => 'FIN-002',
-            'route'  => 'relatorios.financeiro.comissao_redeconomia',
+            'label'    => 'Comissão Redeconomia',
+            'app_name' => 'blank_COMISSOES',
+            'route'    => 'relatorios.financeiro.comissao_redeconomia',
             'filters' => [
                 ['name' => 'data_ini', 'label' => 'Data Início', 'type' => 'date', 'required' => true],
                 ['name' => 'data_fim', 'label' => 'Data Fim',    'type' => 'date', 'required' => true],

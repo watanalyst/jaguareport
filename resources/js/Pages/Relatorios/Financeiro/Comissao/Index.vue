@@ -5,7 +5,6 @@ import FilterPanel from '@/Components/Reports/FilterPanel.vue'
 
 const props = defineProps({
   title: String,
-  codigo: String,
   filters: Array,
   empresas: { type: Array, default: () => [] },
 })
@@ -18,7 +17,7 @@ const gerarRoute = route('relatorios.financeiro.comissao.gerar')
 </script>
 
 <template>
-  <ReportPageLayout :title="title" :codigo="codigo">
+  <ReportPageLayout :title="title">
     <FilterPanel
       :filters="filters"
       :form="form"

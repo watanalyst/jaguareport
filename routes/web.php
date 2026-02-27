@@ -24,14 +24,18 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
     Route::prefix('financeiro')->name('financeiro.')->group(function () {
 
         Route::get('comissao', [ComissaoController::class, 'index'])
-            ->name('comissao');
+            ->name('comissao')
+            ->middleware('report.permission:blank_COMISSOES');
         Route::get('comissao/gerar', [ComissaoController::class, 'gerar'])
-            ->name('comissao.gerar');
+            ->name('comissao.gerar')
+            ->middleware('report.permission:blank_COMISSOES');
 
         Route::get('comissao-redeconomia', [ComissaoRedeconomiaController::class, 'index'])
-            ->name('comissao_redeconomia');
+            ->name('comissao_redeconomia')
+            ->middleware('report.permission:blank_COMISSOES');
         Route::get('comissao-redeconomia/gerar', [ComissaoRedeconomiaController::class, 'gerar'])
-            ->name('comissao_redeconomia.gerar');
+            ->name('comissao_redeconomia.gerar')
+            ->middleware('report.permission:blank_COMISSOES');
     });
 });
 
