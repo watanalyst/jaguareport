@@ -30,6 +30,23 @@ return [
                 ['name' => 'data_fim', 'label' => 'Data Fim',    'type' => 'date', 'required' => true],
             ],
         ],
+
+        'fechamento_cambio' => [
+            'label'    => 'Fechamento Câmbio',
+            'app_name' => 'FILTRO_FECHAMENTO_CAMBIO',
+            'route'    => 'relatorios.financeiro.fechamento_cambio',
+            'csv'      => true,
+            'filters'  => [
+                ['name' => 'dat_cambio',     'label' => 'Data Câmbio',  'type' => 'date',   'required' => true],
+                ['name' => 'cod_banco',      'label' => 'Banco',        'type' => 'select', 'required' => true, 'placeholder' => 'Selecione'],
+                ['name' => 'fech',           'label' => 'Fech',         'type' => 'select', 'required' => false, 'placeholder' => 'Selecione',
+                 'options' => ['' => 'Selecione', 'D0' => 'D+0', 'D1' => 'D+1', 'D2' => 'D+2', 'ACC' => 'ACC', 'TRV' => 'TRV', 'TRF' => 'TRF', 'FIN' => 'FIN', 'PGTO' => 'PGTO']],
+                ['name' => 'ies_due',        'label' => 'DUE',          'type' => 'radio',  'required' => false,
+                 'options' => ['' => 'Todos', 'S' => 'Sim', 'N' => 'Não']],
+                ['name' => 'num_seq_cambio', 'label' => 'Seq. Câmbio',  'type' => 'text',   'required' => false],
+                ['name' => 'num_contrato',   'label' => 'Nº Contrato',  'type' => 'text',   'required' => false],
+            ],
+        ],
     ],
 
 ];

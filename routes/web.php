@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Relatorios\Financeiro\FechamentoCambioController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,13 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('comissao-redeconomia/gerar', [ComissaoRedeconomiaController::class, 'gerar'])
             ->name('comissao_redeconomia.gerar')
             ->middleware('report.permission:blank_COMISSOES');
+
+        Route::get('fechamento-cambio', [FechamentoCambioController::class, 'index'])
+            ->name('fechamento_cambio')
+            ->middleware('report.permission:FILTRO_FECHAMENTO_CAMBIO');
+        Route::get('fechamento-cambio/gerar', [FechamentoCambioController::class, 'gerar'])
+            ->name('fechamento_cambio.gerar')
+            ->middleware('report.permission:FILTRO_FECHAMENTO_CAMBIO');
     });
 });
 
