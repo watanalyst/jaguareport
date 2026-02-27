@@ -10,4 +10,7 @@ export default defineConfig({
     }),
     vue(),
   ],
+  resolve: {
+    dedupe: ['vue', '@heroicons/vue'],
+  },
 });
