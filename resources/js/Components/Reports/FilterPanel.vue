@@ -1,5 +1,5 @@
 <script setup>
-import { InputLabel, InputError } from '@jagua/ui'
+import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton } from '@jagua/ui'
 import RadioGroup from './RadioGroup.vue'
 import { ArrowDownTrayIcon, TableCellsIcon, CheckCircleIcon, ExclamationTriangleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
@@ -217,29 +217,24 @@ function clearFilters() {
     </div>
 
     <div class="flex items-center gap-3 border-t border-gray-200 pt-6 mt-2">
-      <button
+      <PrimaryButton
         type="submit"
         @click="activeFormat = 'pdf'"
         :disabled="loading"
-        class="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_0_rgba(9,63,135,0.35)] transition-all duration-200 hover:-translate-y-px hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-        :style="{ background: 'linear-gradient(135deg, #093F87 0%, #0B56B3 100%)' }"
       >
-        <!-- Spinner -->
         <svg v-if="loading && activeFormat === 'pdf'" class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
         <ArrowDownTrayIcon v-else class="h-4 w-4" />
         <span>{{ loading && activeFormat === 'pdf' ? 'Gerando...' : 'Gerar PDF' }}</span>
-      </button>
+      </PrimaryButton>
 
-      <button
+      <SuccessButton
         v-if="csv"
         type="submit"
         @click="activeFormat = 'csv'"
         :disabled="loading"
-        class="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_0_rgba(21,101,55,0.35)] transition-all duration-200 hover:-translate-y-px hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-        :style="{ background: 'linear-gradient(135deg, #15803d 0%, #16a34a 100%)' }"
       >
         <svg v-if="loading && activeFormat === 'csv'" class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
@@ -247,16 +242,15 @@ function clearFilters() {
         </svg>
         <TableCellsIcon v-else class="h-4 w-4" />
         <span>{{ loading && activeFormat === 'csv' ? 'Gerando...' : 'Gerar CSV' }}</span>
-      </button>
+      </SuccessButton>
 
-      <button
+      <SecondaryButton
         type="button"
         @click="clearFilters"
         :disabled="loading"
-        class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 shadow-sm transition-all duration-200 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Limpar filtros
-      </button>
+      </SecondaryButton>
     </div>
   </form>
 
