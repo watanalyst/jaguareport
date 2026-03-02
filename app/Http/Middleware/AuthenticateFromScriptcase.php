@@ -13,18 +13,24 @@ class AuthenticateFromScriptcase
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // If the user is already authenticated, ignore sc_user completely
-        if (Auth::check()) {
-            // Remove sc_user from URL if present
-            if ($request->query('sc_user')) {
-                return redirect($request->url());
-            }
+        $scUser = $request->query('sc_user');
 
-            return $next($request);
+        // If authenticated, check if sc_user changed (different person logging in)
+        if (Auth::check()) {
+            if ($scUser && Auth::user()->sc_user !== $scUser) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                // Fall through to login the new user below
+            } else {
+                if ($scUser) {
+                    return redirect($request->url());
+                }
+                return $next($request);
+            }
         }
 
         // Not authenticated — try SSO via sc_user
-        $scUser = $request->query('sc_user');
 
         if (!$scUser) {
             return redirect()->away('about:blank');
