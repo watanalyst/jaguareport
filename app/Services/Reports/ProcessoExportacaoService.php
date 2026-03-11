@@ -752,11 +752,22 @@ class ProcessoExportacaoService
         }, $filename, ['Content-Type' => 'application/zip']);
     }
 
+    private const EMPRESA_SIGLAS = [
+        '01' => 'JA',
+        '05' => 'FA',
+        '20' => 'AG',
+        '28' => 'SULL',
+        '43' => 'GO',
+    ];
+
     private function buildFilename(string $docType, array $docConfig, array $keys, ?string $copyType): string
     {
+        $empresa = trim($keys['empresa']);
+        $sigla = self::EMPRESA_SIGLAS[$empresa] ?? $empresa;
+
         $parts = [
             str_replace(' ', '_', $docConfig['label']),
-            $keys['empresa'],
+            $sigla,
             $keys['processo'],
             $keys['ano'],
         ];

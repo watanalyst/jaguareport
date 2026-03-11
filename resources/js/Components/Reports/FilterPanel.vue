@@ -229,6 +229,7 @@ function clearFilters() {
           v-model="form[filter.name]"
           :class="inputClasses"
           :required="filter.required"
+          :placeholder="filter.placeholder"
         />
 
         <InputError :message="form.errors?.[filter.name]" class="mt-1" />
