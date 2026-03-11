@@ -29,6 +29,7 @@ const lookups = computed(() => ({
       :form="form"
       :gerar-route="gerarRoute"
       :lookups="lookups"
+      :title="title"
       csv
     />
   </ReportPageLayout>

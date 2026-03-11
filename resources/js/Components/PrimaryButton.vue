@@ -1,8 +1,0 @@
-<template>
-  <button
-    class="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_0_rgba(9,63,135,0.35)] transition-all duration-200 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-    :style="{ background: 'linear-gradient(135deg, #093F87 0%, #0B56B3 100%)' }"
-  >
-    <slot />
-  </button>
-</template>

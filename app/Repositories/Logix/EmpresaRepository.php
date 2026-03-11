@@ -12,6 +12,7 @@ class EmpresaRepository extends BaseLogixRepository
             SELECT
                 TRIM(COD_EMPRESA) AS ep,
                 TRIM(DEN_EMPRESA) AS empresa,
+                TRIM(DEN_REDUZ) AS den_reduz,
                 TRIM(DEN_MUNIC) AS municipio,
                 UNI_FEDER AS uf
             FROM LOGIXPRD.EMPRESA

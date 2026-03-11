@@ -69,7 +69,7 @@ class FechamentoCambioService
             ];
         }
 
-        $pdfContent = $this->pdfExporter->generate('reports.pdf.fechamento-cambio', [
+        $pdfContent = $this->pdfExporter->generate('reports.pdf.financeiro.fechamento-cambio', [
             'sequencias' => $sequencias,
             'filtros'    => $params,
         ]);

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Relatorios\Financeiro\FechamentoCambioController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
+use App\Http\Controllers\Relatorios\Exportacao\ProcessosExportacaoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -44,6 +45,20 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('fechamento-cambio/gerar', [FechamentoCambioController::class, 'gerar'])
             ->name('fechamento_cambio.gerar')
             ->middleware('report.permission:blank_FECHAMENTO_CAMBIO');
+    });
+
+    // Exportação
+    Route::prefix('exportacao')->name('exportacao.')->group(function () {
+
+        Route::get('processos-exportacao', [ProcessosExportacaoController::class, 'index'])
+            ->name('processos_exportacao')
+            ->middleware('report.permission:blank_PROCESSOS_EXPORTACAO');
+        Route::get('processos-exportacao/pesquisar', [ProcessosExportacaoController::class, 'pesquisar'])
+            ->name('processos_exportacao.pesquisar')
+            ->middleware('report.permission:blank_PROCESSOS_EXPORTACAO');
+        Route::get('processos-exportacao/documento', [ProcessosExportacaoController::class, 'documento'])
+            ->name('processos_exportacao.documento')
+            ->middleware('report.permission:blank_PROCESSOS_EXPORTACAO');
     });
 });
 
