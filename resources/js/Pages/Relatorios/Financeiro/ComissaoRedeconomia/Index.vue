@@ -21,6 +21,7 @@ const gerarRoute = route('relatorios.financeiro.comissao_redeconomia.gerar')
       :filters="filters"
       :form="form"
       :gerar-route="gerarRoute"
+      :title="title"
     />
   </ReportPageLayout>
 </template>

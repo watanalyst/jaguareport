@@ -23,6 +23,7 @@ const gerarRoute = route('relatorios.financeiro.comissao.gerar')
       :form="form"
       :gerar-route="gerarRoute"
       :empresas="empresas"
+      :title="title"
     />
   </ReportPageLayout>
 </template>

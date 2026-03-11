@@ -53,7 +53,7 @@ class ComissaoService
                 $nomeRepresentante = $this->sanitizeNome(trim($registros[0]->nome_repres ?? ''));
                 $nomePdf = "EMP{$ep}-{$codRepres}-{$nomeRepresentante}.pdf";
 
-                $pdfs[$nomePdf] = $this->exporter->generate('reports.pdf.comissao', [
+                $pdfs[$nomePdf] = $this->exporter->generate('reports.pdf.financeiro.comissao', [
                     'dados'   => $registrosOrdenados,
                     'filtros' => $filtros,
                 ]);

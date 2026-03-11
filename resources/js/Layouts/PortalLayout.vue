@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
           class="relative flex h-14 items-center justify-center cursor-pointer"
           style="background: linear-gradient(180deg, rgba(21,101,192,0.12) 0%, rgba(9,63,135,0.06) 60%, transparent 100%); box-shadow: inset 0 -1px 0 rgba(255,255,255,0.06), 0 2px 8px rgba(0,0,0,0.2)"
         >
-          <span v-if="sidebarOpen" class="text-[22px] font-black text-white tracking-tight whitespace-nowrap drop-shadow-[0_0_10px_rgba(21,101,192,0.4)]">
+          <span v-if="sidebarOpen" class="text-[23px] font-black text-white tracking-tight whitespace-nowrap drop-shadow-[0_0_10px_rgba(21,101,192,0.4)]">
             Jaguá<span class="text-primary-light">Report</span>
           </span>
           <span v-else class="text-lg font-black text-white drop-shadow-[0_0_8px_rgba(21,101,192,0.4)]">
@@ -178,7 +178,7 @@ onBeforeUnmount(() => {
                      text-[11px] font-bold uppercase tracking-widest text-gray-300/80
                      hover:text-gray-200 hover:bg-white/5 transition-colors duration-150
                      focus:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
-              :class="index > 0 ? 'mt-4 mb-1' : 'mb-1'"
+              :class="index > 0 ? 'mt-2 mb-1' : 'mb-1'"
             >
               <span class="flex items-center gap-2">
                 <FolderIcon class="h-3.5 w-3.5" />
@@ -310,23 +310,7 @@ onBeforeUnmount(() => {
               class="absolute right-0 mt-2 w-52 bg-white rounded-xl z-50 overflow-hidden"
               style="border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 12px 48px -8px rgba(0,0,0,0.12)"
             >
-              <!-- Header -->
-              <div class="flex items-center gap-3 px-4 py-3" style="background: #f8fafc; border-bottom: 1px solid rgba(0,0,0,0.04)">
-                <div
-                  class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
-                  style="background: linear-gradient(135deg, #0A1E44, #093F87)"
-                >
-                  {{ userInitials }}
-                </div>
-                <div class="min-w-0">
-                  <p class="text-sm font-semibold text-gray-800 truncate">{{ user.name }}</p>
-                  <p class="text-xs text-gray-400 mt-0.5">{{ user.sc_user }}</p>
-                </div>
-              </div>
-
               <div class="py-1">
-                <div class="mx-3 border-t border-gray-100"></div>
-
                 <button
                   @click="logout"
                   class="w-full text-left px-4 py-2.5 text-sm hover:bg-red-50 flex items-center gap-3 text-red-500 transition-colors"

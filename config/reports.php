@@ -49,4 +49,23 @@ return [
         ],
     ],
 
+    'exportacao' => [
+        'label' => 'Exportação',
+
+        'processos_exportacao' => [
+            'label'    => 'Processos Exportação',
+            'app_name' => 'blank_PROCESSOS_EXPORTACAO',
+            'route'    => 'relatorios.exportacao.processos_exportacao',
+            'grid'     => true,
+            'filters'  => [
+                ['name' => 'empresa',      'label' => 'Empresa',       'type' => 'select',  'required' => true],
+                ['name' => 'num_processo',  'label' => 'Num Processo',  'type' => 'text',    'required' => true],
+                ['name' => 'ano_processo',  'label' => 'Ano Processo',  'type' => 'text',    'required' => true],
+                ['name' => 'dat_inclusao',  'label' => 'Data Inclusão', 'type' => 'date',    'required' => false],
+                ['name' => 'cod_situacao',  'label' => 'Situação',      'type' => 'select',  'required' => false,
+                 'options' => ['' => 'Todas', 'A' => 'Aberto', 'C' => 'Cancelado', 'F' => 'Faturado', 'O' => 'Outros', 'P' => 'Pedido Gerado']],
+            ],
+        ],
+    ],
+
 ];

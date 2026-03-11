@@ -30,7 +30,7 @@ class ComissaoRedeconomiaService
         $fim    = Carbon::parse($params['data_fim'])->format('d_m_Y');
         $nomeArquivo = "Comissao_Redeconomia_{$inicio}_a_{$fim}.pdf";
 
-        return $this->exporter->download('reports.pdf.comissao-redeconomia', [
+        return $this->exporter->download('reports.pdf.financeiro.comissao-redeconomia', [
             'dadosPorEmpresa' => $dadosPorEmpresa,
             'filtros' => $params,
         ], $nomeArquivo);
