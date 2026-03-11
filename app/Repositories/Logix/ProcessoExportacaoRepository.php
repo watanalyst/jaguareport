@@ -20,8 +20,24 @@ class ProcessoExportacaoRepository extends BaseLogixRepository
         }
 
         if (! empty($params['num_processo'])) {
-            $where[] = 'NUM_PROCESSO = :num_processo';
-            $bindings['num_processo'] = (int) str_replace('.', '', $params['num_processo']);
+            $numeros = array_map(
+                fn ($v) => (int) str_replace('.', '', trim($v)),
+                explode(',', $params['num_processo'])
+            );
+            $numeros = array_filter($numeros); // remove zeros/empty
+
+            if (count($numeros) === 1) {
+                $where[] = 'NUM_PROCESSO = :num_processo';
+                $bindings['num_processo'] = $numeros[0];
+            } else {
+                $placeholders = [];
+                foreach ($numeros as $i => $num) {
+                    $key = "num_processo_{$i}";
+                    $placeholders[] = ":{$key}";
+                    $bindings[$key] = $num;
+                }
+                $where[] = 'NUM_PROCESSO IN (' . implode(', ', $placeholders) . ')';
+            }
         }
 
         if (! empty($params['ano_processo'])) {

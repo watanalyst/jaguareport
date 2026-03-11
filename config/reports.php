@@ -59,7 +59,7 @@ return [
             'grid'     => true,
             'filters'  => [
                 ['name' => 'empresa',      'label' => 'Empresa',       'type' => 'select',  'required' => true],
-                ['name' => 'num_processo',  'label' => 'Num Processo',  'type' => 'text',    'required' => true],
+                ['name' => 'num_processo',  'label' => 'Num Processo',  'type' => 'text',    'required' => true, 'placeholder' => 'Ex: 123, 456, 789'],
                 ['name' => 'ano_processo',  'label' => 'Ano Processo',  'type' => 'text',    'required' => true],
                 ['name' => 'dat_inclusao',  'label' => 'Data Inclusão', 'type' => 'date',    'required' => false],
                 ['name' => 'cod_situacao',  'label' => 'Situação',      'type' => 'select',  'required' => false,
