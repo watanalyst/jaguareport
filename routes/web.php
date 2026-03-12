@@ -29,17 +29,17 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
 
         Route::get('comissao', [ComissaoController::class, 'index'])
             ->name('comissao')
-            ->middleware('report.permission:blank_COMISSOES');
+            ->middleware('report.permission:blank_COMISSAO');
         Route::get('comissao/gerar', [ComissaoController::class, 'gerar'])
             ->name('comissao.gerar')
-            ->middleware('report.permission:blank_COMISSOES');
+            ->middleware('report.permission:blank_COMISSAO');
 
         Route::get('comissao-redeconomia', [ComissaoRedeconomiaController::class, 'index'])
             ->name('comissao_redeconomia')
-            ->middleware('report.permission:blank_COMISSOES');
+            ->middleware('report.permission:blank_COMISSAO_REDECONOMIA');
         Route::get('comissao-redeconomia/gerar', [ComissaoRedeconomiaController::class, 'gerar'])
             ->name('comissao_redeconomia.gerar')
-            ->middleware('report.permission:blank_COMISSOES');
+            ->middleware('report.permission:blank_COMISSAO_REDECONOMIA');
 
         Route::get('comissao-representante', [ComissaoRepresentanteController::class, 'index'])
             ->name('comissao_representante')

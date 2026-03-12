@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Repositories\Logix\PermissionRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 
@@ -94,23 +95,19 @@ class HandleInertiaRequests extends Middleware
             return collect();
         }
 
-        $cacheKey = 'user_permissions';
-        if (session()->has($cacheKey)) {
-            $cached = collect(session($cacheKey));
-            Log::debug('[Permissions] From cache for ' . $user->sc_user, ['permissions' => $cached->all()]);
-            return $cached;
-        }
+        $cacheKey = 'user_permissions_' . $user->sc_user;
 
-        try {
-            $permissions = app(PermissionRepository::class)->getAccessibleApps($user->sc_user);
-        } catch (\Throwable $e) {
-            Log::error('[Permissions] Oracle error: ' . $e->getMessage());
-            $permissions = collect();
-        }
+        return Cache::remember($cacheKey, 300, function () use ($user) {
+            try {
+                $permissions = app(PermissionRepository::class)->getAccessibleApps($user->sc_user);
+            } catch (\Throwable $e) {
+                Log::error('[Permissions] Oracle error: ' . $e->getMessage());
+                $permissions = collect();
+            }
 
-        Log::debug('[Permissions] From Oracle for ' . $user->sc_user, ['permissions' => $permissions->all()]);
-        session([$cacheKey => $permissions->all()]);
+            Log::debug('[Permissions] From Oracle for ' . $user->sc_user, ['permissions' => $permissions->all()]);
 
-        return $permissions;
+            return $permissions;
+        });
     }
 }

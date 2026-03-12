@@ -181,7 +181,7 @@ function clearFilters() {
             type="date"
             v-model="form[sf.name]"
             max="9999-12-31"
-            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all duration-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             :class="form[sf.name] ? 'text-gray-900' : 'text-gray-400'"
             :required="sf.required"
           />
@@ -189,7 +189,7 @@ function clearFilters() {
             v-else-if="sf.type === 'select'"
             :id="sf.name"
             v-model="form[sf.name]"
-            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all duration-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             :class="form[sf.name] === '' || form[sf.name] === null ? 'text-gray-400' : 'text-gray-900'"
             :required="sf.required"
           >
@@ -227,7 +227,7 @@ function clearFilters() {
           type="date"
           v-model="form[filter.name]"
           max="9999-12-31"
-          class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+          class="w-full rounded-lg border border-gray-300 px-10 py-2 text-sm shadow-sm transition-all duration-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           :class="form[filter.name] ? 'text-gray-900' : 'text-gray-400'"
           :required="filter.required"
         />
@@ -237,7 +237,7 @@ function clearFilters() {
           v-else-if="filter.type === 'select'"
           :id="filter.name"
           v-model="form[filter.name]"
-          class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-all duration-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           :class="form[filter.name] === '' || form[filter.name] === null ? 'text-gray-400' : 'text-gray-900'"
           :required="filter.required"
         >

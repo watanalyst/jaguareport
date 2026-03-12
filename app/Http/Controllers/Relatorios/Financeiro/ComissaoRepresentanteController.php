@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Relatorios\Financeiro\ComissaoRepresentantePesquisarRequest;
 use App\Services\Reports\ComissaoRepresentanteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -14,13 +15,15 @@ class ComissaoRepresentanteController extends Controller
     public function index()
     {
         try {
-            $empresas = DB::connection('logix')
-                ->table('RELATORIOS.SC_COMISSAO1')
-                ->selectRaw('DISTINCT EP, EMPRESA')
-                ->where('DAT_EMIS', '>=', '2025-01-01')
-                ->orderBy('EP')
-                ->get()
-                ->map(fn ($e) => (object) ['ep' => trim($e->ep), 'den_reduz' => trim($e->empresa)]);
+            $empresas = Cache::remember('comissao_representante_empresas', 1800, function () {
+                return DB::connection('logix')
+                    ->table('RELATORIOS.SC_COMISSAO1')
+                    ->selectRaw('DISTINCT EP, EMPRESA')
+                    ->where('DAT_EMIS', '>=', '2025-01-01')
+                    ->orderBy('EP')
+                    ->get()
+                    ->map(fn ($e) => (object) ['ep' => trim($e->ep), 'den_reduz' => trim($e->empresa)]);
+            });
         } catch (\Throwable) {
             $empresas = collect();
         }
@@ -29,7 +32,7 @@ class ComissaoRepresentanteController extends Controller
             ['key' => 'emp',          'label' => 'Emp',           'sortable' => true, 'filterable' => true, 'align' => 'center'],
             ['key' => 'cod_repres',   'label' => 'Cód Repres',   'sortable' => true, 'filterable' => true, 'align' => 'center'],
             ['key' => 'nome_repres',  'label' => 'Nome Representante', 'sortable' => true, 'filterable' => true],
-            ['key' => 'mes_comissao', 'label' => 'Mês Comissão',  'sortable' => true, 'type' => 'date'],
+            ['key' => 'mes_comissao', 'label' => 'Mês Comissão',  'sortable' => true, 'type' => 'date', 'align' => 'center'],
             ['key' => 'val_comissao', 'label' => 'Valor Comissão', 'sortable' => true, 'type' => 'currency'],
             ['key' => 'status_aprov', 'label' => 'Status',        'sortable' => true, 'filterable' => true, 'align' => 'center', 'filterMap' => ['S' => 'Aprovado', 'N' => 'Pendente']],
         ];

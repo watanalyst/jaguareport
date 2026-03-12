@@ -132,7 +132,7 @@ async function handleSearch(values) {
     />
 
     <!-- Search error -->
-    <div v-if="searchError" class="mt-6 flex items-center gap-3 rounded-xl bg-red-50 px-4 py-3">
+    <div v-if="searchError" class="mt-6 flex items-center gap-3 rounded-xl bg-red-50 px-12 py-3">
       <ExclamationTriangleIcon class="h-5 w-5 flex-shrink-0 text-red-500" />
       <p class="text-sm text-red-700">{{ searchError }}</p>
     </div>

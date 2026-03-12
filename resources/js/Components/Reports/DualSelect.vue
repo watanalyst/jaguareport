@@ -82,7 +82,7 @@ function dblRight(e) {
         ref="leftRef"
         multiple
         @dblclick="dblLeft"
-        class="w-full h-28 rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-base text-gray-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full h-28 rounded-lg border border-gray-300 bg-white px-2 py-2 text-sm text-gray-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       >
         <option v-for="opt in available" :key="opt.value" :value="opt.value">
           {{ opt.label }}
@@ -113,7 +113,7 @@ function dblRight(e) {
         ref="rightRef"
         multiple
         @dblclick="dblRight"
-        class="w-full h-28 rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-base text-gray-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+        class="w-full h-28 rounded-lg border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       >
         <option v-for="opt in chosen" :key="opt.value" :value="opt.value">
           {{ opt.label }}
