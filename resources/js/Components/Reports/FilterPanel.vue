@@ -1,8 +1,10 @@
 <script setup>
 import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal } from '@jagua/ui'
 import RadioGroup from './RadioGroup.vue'
+import ComboboxInput from './ComboboxInput.vue'
+import DualSelect from './DualSelect.vue'
 import { ArrowDownTrayIcon, TableCellsIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
   filters: { type: Array, required: true },
@@ -26,6 +28,14 @@ const modalMessage = ref('')
 const inputClasses = 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500'
 
 const activeFormat = ref('pdf')
+
+// Separate dual-select filters from regular ones
+const dualSelectFilters = computed(() => props.filters.filter(f => f.type === 'dual-select'))
+const regularFilters = computed(() => props.filters.filter(f => f.type !== 'dual-select'))
+
+// When dual-select exists, stack the first 2 regular filters beside it
+const sideFilters = computed(() => dualSelectFilters.value.length ? regularFilters.value.slice(0, 2) : [])
+const bottomFilters = computed(() => dualSelectFilters.value.length ? regularFilters.value.slice(2) : regularFilters.value)
 
 async function submit(format = 'pdf') {
   // Search mode: emit values and return
@@ -149,8 +159,65 @@ function clearFilters() {
 
 <template>
   <form @submit.prevent="submit(activeFormat)">
+    <!-- Top row: dual-select (left) + first 2 filters stacked (right) -->
+    <div v-if="dualSelectFilters.length" class="grid gap-5 mb-4 items-end grid-cols-1 lg:grid-cols-[auto_1fr]">
+      <!-- Dual-select -->
+      <div v-for="filter in dualSelectFilters" :key="filter.name">
+        <InputLabel :for="filter.name" :value="filter.label" class="mb-1.5" />
+        <DualSelect
+          v-model="form[filter.name]"
+          :options="lookups[filter.name] || []"
+        />
+        <InputError :message="form.errors?.[filter.name]" class="mt-1" />
+      </div>
+
+      <!-- Side filters (stacked beside dual-select, bottom-aligned) -->
+      <div v-if="sideFilters.length" class="flex flex-col justify-end gap-3 lg:max-w-xs">
+        <div v-for="sf in sideFilters" :key="sf.name">
+          <InputLabel :for="sf.name" :value="sf.label" class="mb-1.5" />
+          <input
+            v-if="sf.type === 'date'"
+            :id="sf.name"
+            type="date"
+            v-model="form[sf.name]"
+            max="9999-12-31"
+            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+            :class="form[sf.name] ? 'text-gray-900' : 'text-gray-400'"
+            :required="sf.required"
+          />
+          <select
+            v-else-if="sf.type === 'select'"
+            :id="sf.name"
+            v-model="form[sf.name]"
+            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+            :class="form[sf.name] === '' || form[sf.name] === null ? 'text-gray-400' : 'text-gray-900'"
+            :required="sf.required"
+          >
+            <template v-if="lookups[sf.name]">
+              <option value="" class="text-gray-400">{{ sf.placeholder || 'Selecione...' }}</option>
+              <option v-for="opt in lookups[sf.name]" :key="opt.value" :value="opt.value" class="text-gray-900">{{ opt.label }}</option>
+            </template>
+            <template v-else-if="sf.options">
+              <option v-for="(label, value) in sf.options" :key="value" :value="value" :class="value === '' ? 'text-gray-400' : 'text-gray-900'">{{ label }}</option>
+            </template>
+          </select>
+          <input
+            v-else
+            :id="sf.name"
+            type="text"
+            v-model="form[sf.name]"
+            :class="inputClasses"
+            :required="sf.required"
+            :placeholder="sf.placeholder"
+          />
+          <InputError :message="form.errors?.[sf.name]" class="mt-1" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Remaining filters: 3-col grid -->
     <div class="grid grid-cols-1 gap-x-5 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div v-for="filter in filters" :key="filter.name">
+      <div v-for="filter in bottomFilters" :key="filter.name">
         <InputLabel :for="filter.name" :value="filter.label" class="mb-1.5" />
 
         <!-- Date -->
@@ -159,6 +226,7 @@ function clearFilters() {
           :id="filter.name"
           type="date"
           v-model="form[filter.name]"
+          max="9999-12-31"
           class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
           :class="form[filter.name] ? 'text-gray-900' : 'text-gray-400'"
           :required="filter.required"
@@ -219,6 +287,15 @@ function clearFilters() {
           :options="filter.options"
           v-model="form[filter.name]"
           class="mt-1.5"
+        />
+
+        <!-- Combobox (autocomplete) -->
+        <ComboboxInput
+          v-else-if="filter.type === 'combobox'"
+          v-model="form[filter.name]"
+          :options="lookups[filter.name] || []"
+          :placeholder="filter.placeholder || 'Pesquisar...'"
+          :input-class="inputClasses + ' pr-12'"
         />
 
         <!-- Text (default) -->

@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Relatorios\Financeiro\FechamentoCambioController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
+use App\Http\Controllers\Relatorios\Financeiro\ComissaoRepresentanteController;
+use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\ProcessosExportacaoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +41,19 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
             ->name('comissao_redeconomia.gerar')
             ->middleware('report.permission:blank_COMISSOES');
 
+        Route::get('comissao-representante', [ComissaoRepresentanteController::class, 'index'])
+            ->name('comissao_representante')
+            ->middleware('report.permission:blank_COMISSAO_REPRESENTANTE');
+        Route::get('comissao-representante/pesquisar', [ComissaoRepresentanteController::class, 'pesquisar'])
+            ->name('comissao_representante.pesquisar')
+            ->middleware('report.permission:blank_COMISSAO_REPRESENTANTE');
+        Route::post('comissao-representante/aprovar', [ComissaoRepresentanteController::class, 'aprovar'])
+            ->name('comissao_representante.aprovar')
+            ->middleware('report.permission:blank_COMISSAO_REPRESENTANTE');
+        Route::post('comissao-representante/desaprovar', [ComissaoRepresentanteController::class, 'desaprovar'])
+            ->name('comissao_representante.desaprovar')
+            ->middleware('report.permission:blank_COMISSAO_REPRESENTANTE');
+
         Route::get('fechamento-cambio', [FechamentoCambioController::class, 'index'])
             ->name('fechamento_cambio')
             ->middleware('report.permission:blank_FECHAMENTO_CAMBIO');
@@ -59,6 +74,16 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('processos-exportacao/documento', [ProcessosExportacaoController::class, 'documento'])
             ->name('processos_exportacao.documento')
             ->middleware('report.permission:blank_PROCESSOS_EXPORTACAO');
+
+        Route::get('embarques-exportacao', [EmbarquesExportacaoController::class, 'index'])
+            ->name('embarques_exportacao')
+            ->middleware('report.permission:blank_EMBARQUES_EXPORTACAO');
+        Route::get('embarques-exportacao/pesquisar', [EmbarquesExportacaoController::class, 'pesquisar'])
+            ->name('embarques_exportacao.pesquisar')
+            ->middleware('report.permission:blank_EMBARQUES_EXPORTACAO');
+        Route::get('embarques-exportacao/items', [EmbarquesExportacaoController::class, 'items'])
+            ->name('embarques_exportacao.items')
+            ->middleware('report.permission:blank_EMBARQUES_EXPORTACAO');
     });
 });
 

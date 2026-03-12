@@ -74,6 +74,7 @@ class HandleInertiaRequests extends Middleware
                 $section['items'][] = [
                     'label'     => $report['label'],
                     'routeName' => $report['route'],
+                    'href'      => route($report['route'], [], false),
                 ];
             }
 

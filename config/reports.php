@@ -7,7 +7,7 @@ return [
 
         'comissao' => [
             'label'    => 'Comissão',
-            'app_name' => 'blank_COMISSOES',
+            'app_name' => 'blank_COMISSAO',
             'route'    => 'relatorios.financeiro.comissao',
             'filters' => [
                 ['name' => 'ep',         'label' => 'Empresa',                'type' => 'select', 'required' => false],
@@ -23,11 +23,26 @@ return [
 
         'comissao_redeconomia' => [
             'label'    => 'Comissão Redeconomia',
-            'app_name' => 'blank_COMISSOES',
+            'app_name' => 'blank_COMISSAO_REDECONOMIA',
             'route'    => 'relatorios.financeiro.comissao_redeconomia',
             'filters' => [
                 ['name' => 'data_ini', 'label' => 'Data Início', 'type' => 'date', 'required' => true],
                 ['name' => 'data_fim', 'label' => 'Data Fim',    'type' => 'date', 'required' => true],
+            ],
+        ],
+
+        'comissao_representante' => [
+            'label'    => 'Comissão Representante',
+            'app_name' => 'blank_COMISSAO_REPRESENTANTE',
+            'route'    => 'relatorios.financeiro.comissao_representante',
+            'grid'     => true,
+            'filters'  => [
+                ['name' => 'emp',        'label' => 'Empresa',        'type' => 'select',  'required' => false],
+                ['name' => 'data_ini',   'label' => 'Data Início',    'type' => 'date',    'required' => false],
+                ['name' => 'data_fim',   'label' => 'Data Fim',       'type' => 'date',    'required' => false],
+                ['name' => 'cod_repres', 'label' => 'Representante',  'type' => 'text',    'required' => false, 'placeholder' => 'Ex: 3, 5, 59'],
+                ['name' => 'status',     'label' => 'Status',           'type' => 'select',  'required' => false,
+                 'options' => ['' => 'Todos', 'S' => 'Aprovado', 'N' => 'Pendente']],
             ],
         ],
 
@@ -52,6 +67,21 @@ return [
     'exportacao' => [
         'label' => 'Exportação',
 
+        'embarques_exportacao' => [
+            'label'    => 'Embarques Exportação',
+            'app_name' => 'blank_EMBARQUES_EXPORTACAO',
+            'route'    => 'relatorios.exportacao.embarques_exportacao',
+            'grid'     => true,
+            'filters'  => [
+                ['name' => 'empresa',      'label' => 'Empresa',          'type' => 'dual-select', 'required' => true],
+                ['name' => 'dt_prev_ini',  'label' => 'Prev. VDJ Início', 'type' => 'date',     'required' => false],
+                ['name' => 'dt_prev_fim',  'label' => 'Prev. VDJ Fim',    'type' => 'date',     'required' => false],
+                ['name' => 'situacao_ped', 'label' => 'Situação',         'type' => 'select',   'required' => false,
+                 'options' => ['' => 'Todas', 'ABERTO' => 'Aberto', 'C/ BOOKING' => 'C/ Booking', 'FATURADO' => 'Faturado', 'PEDIDO GERADO' => 'Pedido Gerado']],
+                ['name' => 'cod_item',     'label' => 'Cód Item',         'type' => 'combobox', 'required' => false, 'placeholder' => 'Pesquisar item...'],
+            ],
+        ],
+
         'processos_exportacao' => [
             'label'    => 'Processos Exportação',
             'app_name' => 'blank_PROCESSOS_EXPORTACAO',
@@ -66,6 +96,46 @@ return [
                  'options' => ['' => 'Todas', 'A' => 'Aberto', 'C' => 'Cancelado', 'F' => 'Faturado', 'O' => 'Outros', 'P' => 'Pedido Gerado']],
             ],
         ],
+    ],
+
+    'logistica' => [
+        'label' => 'Logística',
+    ],
+
+    'suprimentos' => [
+        'label' => 'Suprimentos',
+    ],
+
+    'administrativo' => [
+        'label' => 'Administrativo',
+    ],
+
+    'contabilidade' => [
+        'label' => 'Contabilidade',
+    ],
+
+    'custos' => [
+        'label' => 'Custos',
+    ],
+
+    'pcp' => [
+        'label' => 'PCP',
+    ],
+
+    'esg' => [
+        'label' => 'ESG',
+    ],
+
+    'ti' => [
+        'label' => 'TI',
+    ],
+
+    'mercado_interno' => [
+        'label' => 'Mercado Interno',
+    ],
+
+    'mercado_externo' => [
+        'label' => 'Mercado Externo',
     ],
 
 ];
