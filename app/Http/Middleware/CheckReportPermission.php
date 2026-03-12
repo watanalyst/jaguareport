@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use App\Repositories\Logix\PermissionRepository;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckReportPermission
@@ -17,17 +19,16 @@ class CheckReportPermission
             return redirect()->route('dashboard')->with('error', 'Acesso não autorizado.');
         }
 
-        $cacheKey = 'user_permissions';
-        if (session()->has($cacheKey)) {
-            $permissions = collect(session($cacheKey));
-        } else {
+        $cacheKey = 'user_permissions_' . $user->sc_user;
+
+        $permissions = Cache::remember($cacheKey, 300, function () use ($user) {
             try {
-                $permissions = app(PermissionRepository::class)->getAccessibleApps($user->sc_user);
-            } catch (\Throwable) {
-                $permissions = collect();
+                return app(PermissionRepository::class)->getAccessibleApps($user->sc_user);
+            } catch (\Throwable $e) {
+                Log::error('[CheckReportPermission] Oracle error: ' . $e->getMessage());
+                return collect();
             }
-            session([$cacheKey => $permissions->all()]);
-        }
+        });
 
         if (!$permissions->contains($appName)) {
             return redirect()->route('dashboard')->with('error', 'Você não tem permissão para acessar este relatório.');
