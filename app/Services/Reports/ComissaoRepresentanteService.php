@@ -112,11 +112,7 @@ class ComissaoRepresentanteService
                 ->where('EMP', $reg['emp'])
                 ->where('COD_REPRES', $reg['cod_repres'])
                 ->where('MES_COMISSAO', $reg['mes_comissao'])
-                ->update([
-                    'STATUS_APROV'   => 'N',
-                    'DATA_APROVACAO' => null,
-                    'USUARIO_APROV'  => null,
-                ]);
+                ->delete();
             $count += $affected;
         }
 
