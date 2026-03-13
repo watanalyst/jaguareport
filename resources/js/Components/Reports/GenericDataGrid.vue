@@ -230,9 +230,11 @@ function openFullscreen() {
   .toolbar .left b{color:#111827;font-weight:600}
   .toolbar .right{display:flex;align-items:center;gap:8px}
   .btn{padding:6px 14px;font-size:12px;font-weight:600;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#374151;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,0.06)}
-  .btn:hover{background:#f0f5ff;border-color:#93c5fd;color:#1d4ed8;box-shadow:0 3px 10px rgba(29,78,216,0.12)}
+  .btn:hover{background:#eff6ff;border-color:#93c5fd;color:#2563eb;transform:translateY(-1px);box-shadow:0 3px 10px rgba(29,78,216,0.12)}
   .btn-excel{background:linear-gradient(135deg,#047857 0%,#059669 100%);color:#fff;border-color:#047857;font-weight:600;box-shadow:0 4px 14px rgba(4,120,87,0.35)}
-  .btn-excel:hover{filter:brightness(1.1);box-shadow:0 4px 14px rgba(4,120,87,0.45)}
+  .btn-excel:hover{transform:translateY(-1px);filter:brightness(1.1);box-shadow:0 4px 14px rgba(4,120,87,0.45);background:linear-gradient(135deg,#047857 0%,#059669 100%);color:#fff}
+  .btn-sair{background:linear-gradient(135deg,#DC2626 0%,#B91C1C 100%);color:#fff;border-color:#DC2626;font-weight:600;box-shadow:0 4px 14px rgba(220,38,38,0.35)}
+  .btn-sair:hover{transform:translateY(-1px);filter:brightness(1.1);box-shadow:0 4px 14px rgba(220,38,38,0.45);background:linear-gradient(135deg,#DC2626 0%,#B91C1C 100%);color:#fff}
   .pg-select{padding:4px 24px 4px 10px;font-size:12px;font-weight:600;border:1px solid #e5e7eb;border-radius:8px;background:#fff;color:#374151;cursor:pointer}
   .pg-select:focus{outline:none;border-color:rgba(9,63,135,0.4);box-shadow:0 0 0 2px rgba(9,63,135,0.1)}
   .table-wrap{overflow:hidden;border-radius:12px;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
@@ -266,6 +268,7 @@ function openFullscreen() {
   <div class="right">
     <button class="btn btn-excel" onclick="exportExcel()">Excel</button>
     <button class="btn" onclick="window.print()">Imprimir</button>
+    <button class="btn btn-sair" onclick="window.close()">Sair</button>
   </div>
 </div>
 <div class="table-wrap">
