@@ -9,7 +9,7 @@ class ComissaoRepresentanteRepository extends BaseLogixRepository
     public function search(array $params): Collection
     {
         $bindings = [];
-        $where = ['1=1'];
+        $where = ['1=1', 'COD_REPRES_1 IS NOT NULL', 'COD_REPRES_1 != 0'];
 
         if (! empty($params['emp'])) {
             $where[] = 'EP = :emp';
