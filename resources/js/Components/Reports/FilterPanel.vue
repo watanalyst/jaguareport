@@ -1,5 +1,5 @@
 <script setup>
-import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal } from '@jagua/ui'
+import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal } from 'btz-components-vue'
 import RadioGroup from './RadioGroup.vue'
 import ComboboxInput from './ComboboxInput.vue'
 import DualSelect from './DualSelect.vue'

@@ -6,7 +6,7 @@ export default {
   content: [
     './resources/views/**/*.blade.php',
     './resources/js/**/*.vue',
-    './node_modules/@jagua/ui/**/*.vue',
+    './node_modules/btz-components-vue/**/*.vue',
   ],
   theme: {
     extend: {

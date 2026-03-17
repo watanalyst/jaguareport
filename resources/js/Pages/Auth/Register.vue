@@ -1,6 +1,6 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { InputError, InputLabel, PrimaryButton, TextInput } from '@jagua/ui';
+import { InputError, InputLabel, PrimaryButton, TextInput } from 'btz-components-vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({

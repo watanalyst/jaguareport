@@ -4,7 +4,7 @@ import ReportPageLayout from '@/Components/Reports/ReportPageLayout.vue'
 import FilterPanel from '@/Components/Reports/FilterPanel.vue'
 import DataGrid from '@/Components/Reports/DataGrid.vue'
 import DocumentModal from '@/Components/Reports/DocumentModal.vue'
-import { StatusModal } from '@jagua/ui'
+import { StatusModal } from 'btz-components-vue'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
