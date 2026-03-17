@@ -62,20 +62,50 @@ class HandleInertiaRequests extends Middleware
                 'items' => [],
             ];
 
-            foreach ($module as $key => $report) {
-                if ($key === 'label' || !is_array($report) || !isset($report['route'])) {
+            foreach ($module as $key => $entry) {
+                if ($key === 'label' || !is_array($entry)) {
                     continue;
                 }
 
-                $appName = $report['app_name'] ?? null;
+                // Subgroup (has 'children' key)
+                if (isset($entry['children'])) {
+                    $children = [];
+                    foreach ($entry['children'] as $childKey => $report) {
+                        if (!is_array($report) || !isset($report['route'])) {
+                            continue;
+                        }
+                        $appName = $report['app_name'] ?? null;
+                        if (!$appName || !$allowedApps->contains($appName)) {
+                            continue;
+                        }
+                        $children[] = [
+                            'label'     => $report['label'],
+                            'routeName' => $report['route'],
+                            'href'      => route($report['route'], [], false),
+                        ];
+                    }
+                    if (!empty($children)) {
+                        $section['items'][] = [
+                            'label'    => $entry['label'],
+                            'key'      => $key,
+                            'children' => $children,
+                        ];
+                    }
+                    continue;
+                }
+
+                // Direct item (no subgroup)
+                if (!isset($entry['route'])) {
+                    continue;
+                }
+                $appName = $entry['app_name'] ?? null;
                 if (!$appName || !$allowedApps->contains($appName)) {
                     continue;
                 }
-
                 $section['items'][] = [
-                    'label'     => $report['label'],
-                    'routeName' => $report['route'],
-                    'href'      => route($report['route'], [], false),
+                    'label'     => $entry['label'],
+                    'routeName' => $entry['route'],
+                    'href'      => route($entry['route'], [], false),
                 ];
             }
 

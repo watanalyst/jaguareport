@@ -3,7 +3,7 @@ import { reactive, ref, computed } from 'vue'
 import ReportPageLayout from '@/Components/Reports/ReportPageLayout.vue'
 import FilterPanel from '@/Components/Reports/FilterPanel.vue'
 import GenericDataGrid from '@/Components/Reports/GenericDataGrid.vue'
-import { PrimaryButton, SecondaryButton, StatusModal, ConfirmModal } from '@jagua/ui'
+import { PrimaryButton, SecondaryButton, StatusModal, ConfirmModal } from 'btz-components-vue'
 import { ExclamationTriangleIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({

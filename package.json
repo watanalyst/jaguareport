@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
-    "@jagua/ui": "file:../jagua-ui",
+    "btz-components-vue": "file:../btz-components-vue",
     "xlsx": "^0.18.5",
     "ziggy-js": "^2.6.1"
   }

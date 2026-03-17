@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { SecondaryButton, SuccessButton } from '@jagua/ui'
+import { SecondaryButton, SuccessButton } from 'btz-components-vue'
 import {
   ArrowUpIcon,
   ArrowDownIcon,
@@ -16,10 +16,15 @@ const props = defineProps({
   data: { type: Array, required: true },
   pageSize: { type: Number, default: 25 },
   exportFilename: { type: String, default: 'relatorio' },
+  showExcel: { type: Boolean, default: true },
+  showExpand: { type: Boolean, default: true },
   selectable: { type: Boolean, default: false },
+  expandable: { type: Boolean, default: false },
+  expandedRowId: { type: [String, Number, null], default: null },
+  rowKey: { type: String, default: 'id' },
 })
 
-const emit = defineEmits(['update:selected'])
+const emit = defineEmits(['update:selected', 'row-expand'])
 
 // Selection state
 const selectedSet = ref(new Set())
@@ -64,6 +69,16 @@ watch(() => props.data, () => {
   selectAllChecked.value = false
   emitSelected()
 })
+
+// Expand state
+function toggleExpand(row) {
+  const id = row[props.rowKey]
+  emit('row-expand', props.expandedRowId === id ? null : id)
+}
+
+function isExpanded(row) {
+  return props.expandedRowId != null && row[props.rowKey] === props.expandedRowId
+}
 
 // Sort state
 const sortKey = ref('')
@@ -447,6 +462,8 @@ function goToPage(p) {
       </div>
 
       <div class="flex items-center gap-2">
+        <slot name="toolbar-right" />
+
         <!-- Toggle filters -->
         <SecondaryButton type="button" @click="showFilters = !showFilters">
           <FunnelIcon class="h-4 w-4" />
@@ -466,13 +483,13 @@ function goToPage(p) {
         </SecondaryButton>
 
         <!-- Fullscreen -->
-        <SecondaryButton type="button" @click="openFullscreen" :disabled="!sortedData.length">
+        <SecondaryButton v-if="showExpand" type="button" @click="openFullscreen" :disabled="!sortedData.length">
           <ArrowsPointingOutIcon class="h-4 w-4" />
           <span>Expandir</span>
         </SecondaryButton>
 
         <!-- Export Excel -->
-        <SuccessButton type="button" @click="exportExcel">
+        <SuccessButton v-if="showExcel" type="button" @click="exportExcel">
           <TableCellsIcon class="h-4 w-4" />
           <span>Excel</span>
         </SuccessButton>
@@ -501,6 +518,7 @@ function goToPage(p) {
                 cellAlign(col),
                 col.sortable ? 'cursor-pointer hover:bg-white/10 transition-colors' : '',
               ]"
+              :style="col.width ? { width: col.width } : {}"
               @click="toggleSort(col.key)"
             >
               <span class="inline-flex items-center gap-1.5">
@@ -517,7 +535,7 @@ function goToPage(p) {
           <!-- Filter row -->
           <tr v-if="showFilters" class="bg-gray-50 border-b border-gray-200">
             <th v-if="selectable" class="px-1.5 py-1.5"></th>
-            <th v-for="col in columns" :key="'f-' + col.key" class="px-1.5 py-1.5">
+            <th v-for="col in columns" :key="'f-' + col.key" class="px-1.5 py-1.5" :style="col.width ? { width: col.width } : {}">
               <input
                 v-if="col.filterable !== false"
                 v-model="columnFilters[col.key]"
@@ -530,39 +548,51 @@ function goToPage(p) {
         </thead>
 
         <tbody class="divide-y divide-gray-100/80">
-          <tr
-            v-for="(row, i) in paginatedData"
-            :key="i"
-            class="transition-colors duration-150"
-            :class="[
-              selectable && isRowSelected(i)
-                ? 'bg-blue-50/80 hover:bg-blue-200/60 ring-inset ring-1 ring-blue-200/50'
-                : i % 2 === 0
-                  ? 'bg-white hover:bg-blue-200/70'
-                  : 'bg-slate-100/70 hover:bg-blue-200/70',
-              selectable ? 'cursor-pointer' : '',
-            ]"
-            @click="selectable && toggleRow(i)"
-          >
-            <td v-if="selectable" class="px-3 py-2.5 text-center" @click.stop>
-              <input
-                type="checkbox"
-                :checked="isRowSelected(i)"
-                @change="toggleRow(i)"
-                class="h-3.5 w-3.5 rounded border-gray-300 text-primary focus:ring-primary/50"
-              />
-            </td>
-            <td
-              v-for="col in columns"
-              :key="col.key"
-              class="px-3 py-2.5 whitespace-nowrap text-gray-700"
-              :class="cellAlign(col)"
+          <template v-for="(row, i) in paginatedData" :key="expandable ? row[rowKey] || i : i">
+            <!-- Data row -->
+            <tr
+              class="transition-colors duration-150"
+              :class="[
+                selectable && isRowSelected(i)
+                  ? 'bg-blue-50/80 hover:bg-blue-200/60 ring-inset ring-1 ring-blue-200/50'
+                  : expandable && isExpanded(row)
+                    ? 'bg-primary-50/30 shadow-[inset_4px_0_0_0_#093F87]'
+                    : i % 2 === 0
+                      ? 'bg-white hover:bg-blue-200/70'
+                      : 'bg-slate-100/70 hover:bg-blue-200/70',
+                selectable ? 'cursor-pointer' : '',
+              ]"
+              @click="selectable && toggleRow(i)"
             >
-              <slot :name="'cell-' + col.key" :row="row" :value="row[col.key]" :col="col">
-                {{ formatCell(row[col.key], col) }}
-              </slot>
-            </td>
-          </tr>
+              <td v-if="selectable" class="px-3 py-2.5 text-center" @click.stop>
+                <input
+                  type="checkbox"
+                  :checked="isRowSelected(i)"
+                  @change="toggleRow(i)"
+                  class="h-3.5 w-3.5 rounded border-gray-300 text-primary focus:ring-primary/50"
+                />
+              </td>
+              <td
+                v-for="col in columns"
+                :key="col.key"
+                class="px-3 py-2.5 whitespace-nowrap text-gray-700"
+                :class="cellAlign(col)"
+              >
+                <slot :name="'cell-' + col.key" :row="row" :value="row[col.key]" :col="col" :expanded="isExpanded(row)" :toggleExpand="() => toggleExpand(row)">
+                  {{ formatCell(row[col.key], col) }}
+                </slot>
+              </td>
+            </tr>
+
+            <!-- Expanded detail row -->
+            <tr v-if="expandable && isExpanded(row)">
+              <td :colspan="(selectable ? 1 : 0) + columns.length" class="p-0 bg-gray-50/80 shadow-[inset_4px_0_0_0_#093F87,inset_0_-2px_0_0_rgba(9,63,135,0.2)]">
+                <div class="px-3 py-2">
+                  <slot name="expanded-row" :row="row" :close="() => toggleExpand(row)" />
+                </div>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
 

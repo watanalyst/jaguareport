@@ -5,61 +5,68 @@ return [
     'financeiro' => [
         'label' => 'Financeiro',
 
-        'comissao' => [
-            'label'    => 'Comissão',
-            'app_name' => 'blank_COMISSAO',
-            'route'    => 'relatorios.financeiro.comissao',
-            'filters' => [
-                ['name' => 'ep',         'label' => 'Empresa',                'type' => 'select', 'required' => false],
-                ['name' => 'repres_ini', 'label' => 'Representante Inicial',  'type' => 'text',   'required' => true],
-                ['name' => 'repres_fim', 'label' => 'Representante Final',    'type' => 'text',   'required' => true],
-                ['name' => 'televendas', 'label' => 'Televendas',             'type' => 'radio',  'required' => false, 'options' => ['' => 'Todos', 'S' => 'Sim', 'N' => 'Não']],
-                ['name' => 'clt',        'label' => 'CLT',                    'type' => 'radio',  'required' => false, 'options' => ['' => 'Todos', 'S' => 'Sim', 'N' => 'Não']],
-                ['name' => 'fr',         'label' => 'Tipo Frete',             'type' => 'radio',  'required' => false, 'options' => ['' => 'Ambos', 'C' => 'CIF', 'F' => 'FOB']],
-                ['name' => 'data_ini',   'label' => 'Data Crédito Inicial',   'type' => 'date',   'required' => false],
-                ['name' => 'data_fim',   'label' => 'Data Crédito Final',     'type' => 'date',   'required' => false],
-            ],
-        ],
+        'contas_receber' => [
+            'label'    => 'Contas a Receber',
+            'children' => [
 
-        'comissao_redeconomia' => [
-            'label'    => 'Comissão Redeconomia',
-            'app_name' => 'blank_COMISSAO_REDECONOMIA',
-            'route'    => 'relatorios.financeiro.comissao_redeconomia',
-            'filters' => [
-                ['name' => 'data_ini', 'label' => 'Data Início', 'type' => 'date', 'required' => true],
-                ['name' => 'data_fim', 'label' => 'Data Fim',    'type' => 'date', 'required' => true],
-            ],
-        ],
+                'comissao' => [
+                    'label'    => 'Comissão',
+                    'app_name' => 'blank_COMISSAO',
+                    'route'    => 'relatorios.financeiro.comissao',
+                    'filters' => [
+                        ['name' => 'ep',         'label' => 'Empresa',                'type' => 'select', 'required' => false],
+                        ['name' => 'repres_ini', 'label' => 'Representante Inicial',  'type' => 'text',   'required' => true],
+                        ['name' => 'repres_fim', 'label' => 'Representante Final',    'type' => 'text',   'required' => true],
+                        ['name' => 'televendas', 'label' => 'Televendas',             'type' => 'radio',  'required' => false, 'options' => ['' => 'Todos', 'S' => 'Sim', 'N' => 'Não']],
+                        ['name' => 'clt',        'label' => 'CLT',                    'type' => 'radio',  'required' => false, 'options' => ['' => 'Todos', 'S' => 'Sim', 'N' => 'Não']],
+                        ['name' => 'fr',         'label' => 'Tipo Frete',             'type' => 'radio',  'required' => false, 'options' => ['' => 'Ambos', 'C' => 'CIF', 'F' => 'FOB']],
+                        ['name' => 'data_ini',   'label' => 'Data Crédito Inicial',   'type' => 'date',   'required' => false],
+                        ['name' => 'data_fim',   'label' => 'Data Crédito Final',     'type' => 'date',   'required' => false],
+                    ],
+                ],
 
-        'comissao_representante' => [
-            'label'    => 'Comissão Representante',
-            'app_name' => 'blank_COMISSAO_REPRESENTANTE',
-            'route'    => 'relatorios.financeiro.comissao_representante',
-            'grid'     => true,
-            'filters'  => [
-                ['name' => 'emp',        'label' => 'Empresa',        'type' => 'select',  'required' => false],
-                ['name' => 'data_ini',   'label' => 'Data Início',    'type' => 'date',    'required' => false],
-                ['name' => 'data_fim',   'label' => 'Data Fim',       'type' => 'date',    'required' => false],
-                ['name' => 'cod_repres', 'label' => 'Representante',  'type' => 'text',    'required' => false, 'placeholder' => 'Ex: 3, 5, 59'],
-                ['name' => 'status',     'label' => 'Status',           'type' => 'select',  'required' => false,
-                 'options' => ['' => 'Todos', 'S' => 'Aprovado', 'N' => 'Pendente']],
-            ],
-        ],
+                'comissao_redeconomia' => [
+                    'label'    => 'Comissão Redeconomia',
+                    'app_name' => 'blank_COMISSAO_REDECONOMIA',
+                    'route'    => 'relatorios.financeiro.comissao_redeconomia',
+                    'filters' => [
+                        ['name' => 'data_ini', 'label' => 'Data Início', 'type' => 'date', 'required' => true],
+                        ['name' => 'data_fim', 'label' => 'Data Fim',    'type' => 'date', 'required' => true],
+                    ],
+                ],
 
-        'fechamento_cambio' => [
-            'label'    => 'Fechamento Câmbio',
-            'app_name' => 'blank_FECHAMENTO_CAMBIO',
-            'route'    => 'relatorios.financeiro.fechamento_cambio',
-            'csv'      => true,
-            'filters'  => [
-                ['name' => 'dat_cambio',     'label' => 'Data Câmbio',  'type' => 'date',   'required' => true],
-                ['name' => 'cod_banco',      'label' => 'Banco',        'type' => 'select', 'required' => true, 'placeholder' => 'Selecione'],
-                ['name' => 'fech',           'label' => 'Fech',         'type' => 'select', 'required' => false, 'placeholder' => 'Selecione',
-                 'options' => ['' => 'Selecione', 'D0' => 'D+0', 'D1' => 'D+1', 'D2' => 'D+2', 'ACC' => 'ACC', 'TRV' => 'TRV', 'TRF' => 'TRF', 'FIN' => 'FIN', 'PGTO' => 'PGTO']],
-                ['name' => 'ies_due',        'label' => 'DUE',          'type' => 'radio',  'required' => false,
-                 'options' => ['' => 'Todos', 'S' => 'Sim', 'N' => 'Não']],
-                ['name' => 'num_seq_cambio', 'label' => 'Seq. Câmbio',  'type' => 'text',   'required' => false],
-                ['name' => 'num_contrato',   'label' => 'Nº Contrato',  'type' => 'text',   'required' => false],
+                'comissao_representante' => [
+                    'label'    => 'Comissão Representante',
+                    'app_name' => 'blank_COMISSAO_REPRESENTANTE',
+                    'route'    => 'relatorios.financeiro.comissao_representante',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'emp',        'label' => 'Empresa',        'type' => 'select',  'required' => false],
+                        ['name' => 'data_ini',   'label' => 'Data Início',    'type' => 'date',    'required' => false],
+                        ['name' => 'data_fim',   'label' => 'Data Fim',       'type' => 'date',    'required' => false],
+                        ['name' => 'cod_repres', 'label' => 'Representante',  'type' => 'text',    'required' => false, 'placeholder' => 'Ex: 3, 5, 59'],
+                        ['name' => 'status',     'label' => 'Status',           'type' => 'select',  'required' => false,
+                         'options' => ['' => 'Todos', 'S' => 'Aprovado', 'N' => 'Pendente']],
+                    ],
+                ],
+
+                'fechamento_cambio' => [
+                    'label'    => 'Fechamento Câmbio',
+                    'app_name' => 'blank_FECHAMENTO_CAMBIO',
+                    'route'    => 'relatorios.financeiro.fechamento_cambio',
+                    'csv'      => true,
+                    'filters'  => [
+                        ['name' => 'dat_cambio',     'label' => 'Data Câmbio',  'type' => 'date',   'required' => true],
+                        ['name' => 'cod_banco',      'label' => 'Banco',        'type' => 'select', 'required' => true, 'placeholder' => 'Selecione'],
+                        ['name' => 'fech',           'label' => 'Fech',         'type' => 'select', 'required' => false, 'placeholder' => 'Selecione',
+                         'options' => ['' => 'Selecione', 'D0' => 'D+0', 'D1' => 'D+1', 'D2' => 'D+2', 'ACC' => 'ACC', 'TRV' => 'TRV', 'TRF' => 'TRF', 'FIN' => 'FIN', 'PGTO' => 'PGTO']],
+                        ['name' => 'ies_due',        'label' => 'DUE',          'type' => 'radio',  'required' => false,
+                         'options' => ['' => 'Todos', 'S' => 'Sim', 'N' => 'Não']],
+                        ['name' => 'num_seq_cambio', 'label' => 'Seq. Câmbio',  'type' => 'text',   'required' => false],
+                        ['name' => 'num_contrato',   'label' => 'Nº Contrato',  'type' => 'text',   'required' => false],
+                    ],
+                ],
+
             ],
         ],
     ],
@@ -95,6 +102,13 @@ return [
                 ['name' => 'cod_situacao',  'label' => 'Situação',      'type' => 'select',  'required' => false,
                  'options' => ['' => 'Todas', 'A' => 'Aberto', 'C' => 'Cancelado', 'F' => 'Faturado', 'O' => 'Outros', 'P' => 'Pedido Gerado']],
             ],
+        ],
+
+        'packing_list' => [
+            'label'    => 'Packing List',
+            'app_name' => 'blank_FORM_PACKING_LIST',
+            'route'    => 'relatorios.exportacao.packing_list',
+            'crud'     => true,
         ],
     ],
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Relatorios\Financeiro\ComissaoController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRepresentanteController;
 use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
+use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
 use App\Http\Controllers\Relatorios\Exportacao\ProcessosExportacaoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -84,6 +85,32 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('embarques-exportacao/items', [EmbarquesExportacaoController::class, 'items'])
             ->name('embarques_exportacao.items')
             ->middleware('report.permission:blank_EMBARQUES_EXPORTACAO');
+
+        // Packing List (CRUD)
+        Route::middleware('report.permission:blank_FORM_PACKING_LIST')->group(function () {
+            Route::get('packing-list', [PackingListController::class, 'index'])
+                ->name('packing_list');
+            Route::get('packing-list/pesquisar', [PackingListController::class, 'pesquisar'])
+                ->name('packing_list.pesquisar');
+            Route::get('packing-list/lookup', [PackingListController::class, 'lookup'])
+                ->name('packing_list.lookup');
+            Route::get('packing-list/{id}', [PackingListController::class, 'show'])
+                ->name('packing_list.show');
+            Route::post('packing-list', [PackingListController::class, 'store'])
+                ->name('packing_list.store');
+            Route::put('packing-list/{id}', [PackingListController::class, 'update'])
+                ->name('packing_list.update');
+            Route::delete('packing-list/{id}', [PackingListController::class, 'destroy'])
+                ->name('packing_list.destroy');
+
+            // Detail rows
+            Route::post('packing-list/{masterId}/detalhes', [PackingListController::class, 'storeDetail'])
+                ->name('packing_list.detalhes.store');
+            Route::put('packing-list/{masterId}/detalhes/{detailId}', [PackingListController::class, 'updateDetail'])
+                ->name('packing_list.detalhes.update');
+            Route::delete('packing-list/{masterId}/detalhes/{detailId}', [PackingListController::class, 'destroyDetail'])
+                ->name('packing_list.detalhes.destroy');
+        });
     });
 });
 
