@@ -169,6 +169,13 @@ return [
                     ],
                 ],
 
+                'banco_credit_note' => [
+                    'label'    => 'Banco Credit Note',
+                    'app_name' => 'blank_BANCO_CREDITO_NOTE',
+                    'route'    => 'relatorios.exportacao.banco_credit_note',
+                    'crud'     => true,
+                ],
+
             ],
         ],
     ],
