@@ -28,7 +28,7 @@ class ProcessosExportacaoController extends Controller
         return Inertia::render('Relatorios/Exportacao/ProcessosExportacao/Index', [
             'title'      => 'Processos Exportação',
             'section'    => 'Exportação',
-            'filters'    => config('reports.exportacao.processos_exportacao.filters'),
+            'filters'    => config('reports.exportacao.processo.children.processos_exportacao.filters'),
             'empresas'   => $empresas,
             'documentos' => $documentos,
         ]);

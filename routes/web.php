@@ -7,6 +7,7 @@ use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRepresentanteController;
 use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
+use App\Http\Controllers\Relatorios\Exportacao\CreditNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\ProcessosExportacaoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -111,6 +112,14 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
             Route::delete('packing-list/{masterId}/detalhes/{detailId}', [PackingListController::class, 'destroyDetail'])
                 ->name('packing_list.detalhes.destroy');
         });
+
+        // Credit Note
+        Route::get('credit-note', [CreditNoteController::class, 'index'])
+            ->name('credit_note')
+            ->middleware('report.permission:blank_CREDIT_NOTE');
+        Route::get('credit-note/gerar', [CreditNoteController::class, 'gerar'])
+            ->name('credit_note.gerar')
+            ->middleware('report.permission:blank_CREDIT_NOTE');
     });
 });
 
