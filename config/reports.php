@@ -158,6 +158,17 @@ return [
                     ],
                 ],
 
+                'baixa_disponivel' => [
+                    'label'    => 'Baixa Disponível',
+                    'app_name' => 'blank_BAIXA_DISPONIVEL',
+                    'route'    => 'relatorios.exportacao.baixa_disponivel',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'dat_conf_pgto_ini', 'label' => 'Dt Conf. Pgto Início', 'type' => 'date', 'required' => true],
+                        ['name' => 'dat_conf_pgto_fim', 'label' => 'Dt Conf. Pgto Fim',    'type' => 'date', 'required' => true],
+                    ],
+                ],
+
             ],
         ],
     ],
