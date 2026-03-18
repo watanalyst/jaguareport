@@ -122,6 +122,18 @@ return [
             'label'    => 'Financeiro',
             'children' => [
 
+                'comissao_exportacao' => [
+                    'label'    => 'Comissão Exportação',
+                    'app_name' => 'blank_COMISSAO_EXPORTACAO',
+                    'route'    => 'relatorios.exportacao.comissao_exportacao',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'nom_agente',        'label' => 'Agente',              'type' => 'combobox', 'required' => false, 'placeholder' => 'Pesquisar agente...'],
+                        ['name' => 'dat_confirm_ini',   'label' => 'Dt Confirm. Pgto Início', 'type' => 'date', 'required' => false],
+                        ['name' => 'dat_confirm_fim',   'label' => 'Dt Confirm. Pgto Fim',    'type' => 'date', 'required' => false],
+                    ],
+                ],
+
                 'credit_note' => [
                     'label'    => 'Credit Note',
                     'app_name' => 'blank_CREDIT_NOTE',
