@@ -20,7 +20,7 @@ class FechamentoCambioController extends Controller
 
         return Inertia::render('Relatorios/Financeiro/FechamentoCambio/Index', [
             'title'   => 'Fechamento Câmbio',
-            'filters' => config('reports.financeiro.fechamento_cambio.filters'),
+            'filters' => config('reports.financeiro.contas_receber.children.fechamento_cambio.filters'),
             'bancos'  => $bancos,
         ]);
     }

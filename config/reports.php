@@ -147,6 +147,17 @@ return [
                     ],
                 ],
 
+                'debit_note' => [
+                    'label'    => 'Debit Note',
+                    'app_name' => 'blank_DEBIT_NOTE',
+                    'route'    => 'relatorios.exportacao.debit_note',
+                    'filters'  => [
+                        ['name' => 'cod_empresa',  'label' => 'Empresa',       'type' => 'select',  'required' => true],
+                        ['name' => 'num_nd',       'label' => 'Nº ND',         'type' => 'text',    'required' => true, 'placeholder' => 'Ex: 01'],
+                        ['name' => 'ano_nd',       'label' => 'Ano ND',        'type' => 'text',    'required' => true, 'placeholder' => 'Ex: 2026'],
+                    ],
+                ],
+
             ],
         ],
     ],

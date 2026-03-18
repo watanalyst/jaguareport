@@ -13,7 +13,7 @@ class ComissaoRedeconomiaController extends Controller
     {
         return Inertia::render('Relatorios/Financeiro/ComissaoRedeconomia/Index', [
             'title'   => 'Relatório Comissão Redeconomia',
-            'filters' => config('reports.financeiro.comissao_redeconomia.filters'),
+            'filters' => config('reports.financeiro.contas_receber.children.comissao_redeconomia.filters'),
         ]);
     }
 

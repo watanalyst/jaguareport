@@ -40,7 +40,7 @@ class ComissaoRepresentanteController extends Controller
         return Inertia::render('Relatorios/Financeiro/ComissaoRepresentante/Index', [
             'title'    => 'Comissão Representante',
             'section'  => 'Financeiro',
-            'filters'  => config('reports.financeiro.comissao_representante.filters'),
+            'filters'  => config('reports.financeiro.contas_receber.children.comissao_representante.filters'),
             'empresas' => $empresas,
             'columns'  => $columns,
         ]);
