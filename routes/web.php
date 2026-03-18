@@ -9,6 +9,7 @@ use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
 use App\Http\Controllers\Relatorios\Exportacao\ComissaoExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\CreditNoteController;
+use App\Http\Controllers\Relatorios\Exportacao\DebitNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\ProcessosExportacaoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -132,6 +133,14 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('credit-note/gerar', [CreditNoteController::class, 'gerar'])
             ->name('credit_note.gerar')
             ->middleware('report.permission:blank_CREDIT_NOTE');
+
+        // Debit Note
+        Route::get('debit-note', [DebitNoteController::class, 'index'])
+            ->name('debit_note')
+            ->middleware('report.permission:blank_DEBIT_NOTE');
+        Route::get('debit-note/gerar', [DebitNoteController::class, 'gerar'])
+            ->name('debit_note.gerar')
+            ->middleware('report.permission:blank_DEBIT_NOTE');
     });
 });
 

@@ -1,31 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\Relatorios\Financeiro;
+namespace App\Http\Controllers\Relatorios\Exportacao;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Relatorios\Financeiro\ComissaoRequest;
+use App\Http\Requests\Relatorios\Exportacao\DebitNoteRequest;
 use App\Repositories\Logix\EmpresaRepository;
-use App\Services\Reports\ComissaoService;
+use App\Services\Reports\DebitNoteService;
 use Inertia\Inertia;
 
-class ComissaoController extends Controller
+class DebitNoteController extends Controller
 {
     public function index(EmpresaRepository $empresaRepo)
     {
+        $allowedEmpresas = ['01', '05'];
+
         try {
-            $empresas = $empresaRepo->all();
+            $empresas = $empresaRepo->all()->filter(
+                fn ($e) => in_array(trim($e->ep), $allowedEmpresas)
+            )->values();
         } catch (\Throwable) {
             $empresas = collect();
         }
 
-        return Inertia::render('Relatorios/Financeiro/Comissao/Index', [
-            'title'    => 'Relatório Comissão',
-            'filters'  => config('reports.financeiro.contas_receber.children.comissao.filters'),
+        return Inertia::render('Relatorios/Exportacao/DebitNote/Index', [
+            'title'    => 'Debit Note',
+            'section'  => 'Exportação',
+            'filters'  => config('reports.exportacao.financeiro_exp.children.debit_note.filters'),
             'empresas' => $empresas,
         ]);
     }
 
-    public function gerar(ComissaoRequest $request, ComissaoService $service)
+    public function gerar(DebitNoteRequest $request, DebitNoteService $service)
     {
         try {
             $response = $service->generate($request->validated());
