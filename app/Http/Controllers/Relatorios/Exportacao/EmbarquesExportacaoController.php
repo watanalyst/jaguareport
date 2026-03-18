@@ -54,7 +54,7 @@ class EmbarquesExportacaoController extends Controller
         return Inertia::render('Relatorios/Exportacao/EmbarquesExportacao/Index', [
             'title'    => 'Embarques Exportação',
             'section'  => 'Exportação',
-            'filters'  => config('reports.exportacao.embarques_exportacao.filters'),
+            'filters'  => config('reports.exportacao.processo.children.embarques_exportacao.filters'),
             'empresas' => $empresas,
             'columns'  => $columns,
         ]);

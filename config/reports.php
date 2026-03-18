@@ -74,41 +74,68 @@ return [
     'exportacao' => [
         'label' => 'Exportação',
 
-        'embarques_exportacao' => [
-            'label'    => 'Embarques Exportação',
-            'app_name' => 'blank_EMBARQUES_EXPORTACAO',
-            'route'    => 'relatorios.exportacao.embarques_exportacao',
-            'grid'     => true,
-            'filters'  => [
-                ['name' => 'empresa',      'label' => 'Empresa',          'type' => 'dual-select', 'required' => true],
-                ['name' => 'dt_prev_ini',  'label' => 'Prev. VDJ Início', 'type' => 'date',     'required' => false],
-                ['name' => 'dt_prev_fim',  'label' => 'Prev. VDJ Fim',    'type' => 'date',     'required' => false],
-                ['name' => 'situacao_ped', 'label' => 'Situação',         'type' => 'select',   'required' => false,
-                 'options' => ['' => 'Todas', 'ABERTO' => 'Aberto', 'C/ BOOKING' => 'C/ Booking', 'FATURADO' => 'Faturado', 'PEDIDO GERADO' => 'Pedido Gerado']],
-                ['name' => 'cod_item',     'label' => 'Cód Item',         'type' => 'combobox', 'required' => false, 'placeholder' => 'Pesquisar item...'],
+        'processo' => [
+            'label'    => 'Processo',
+            'children' => [
+
+                'embarques_exportacao' => [
+                    'label'    => 'Embarques Exportação',
+                    'app_name' => 'blank_EMBARQUES_EXPORTACAO',
+                    'route'    => 'relatorios.exportacao.embarques_exportacao',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'empresa',      'label' => 'Empresa',          'type' => 'dual-select', 'required' => true],
+                        ['name' => 'dt_prev_ini',  'label' => 'Prev. VDJ Início', 'type' => 'date',     'required' => false],
+                        ['name' => 'dt_prev_fim',  'label' => 'Prev. VDJ Fim',    'type' => 'date',     'required' => false],
+                        ['name' => 'situacao_ped', 'label' => 'Situação',         'type' => 'select',   'required' => false,
+                         'options' => ['' => 'Todas', 'ABERTO' => 'Aberto', 'C/ BOOKING' => 'C/ Booking', 'FATURADO' => 'Faturado', 'PEDIDO GERADO' => 'Pedido Gerado']],
+                        ['name' => 'cod_item',     'label' => 'Cód Item',         'type' => 'combobox', 'required' => false, 'placeholder' => 'Pesquisar item...'],
+                    ],
+                ],
+
+                'processos_exportacao' => [
+                    'label'    => 'Processos Exportação',
+                    'app_name' => 'blank_PROCESSOS_EXPORTACAO',
+                    'route'    => 'relatorios.exportacao.processos_exportacao',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'empresa',      'label' => 'Empresa',       'type' => 'select',  'required' => true],
+                        ['name' => 'num_processo',  'label' => 'Num Processo',  'type' => 'text',    'required' => true, 'placeholder' => 'Ex: 123, 456, 789'],
+                        ['name' => 'ano_processo',  'label' => 'Ano Processo',  'type' => 'text',    'required' => true],
+                        ['name' => 'dat_inclusao',  'label' => 'Data Inclusão', 'type' => 'date',    'required' => false],
+                        ['name' => 'cod_situacao',  'label' => 'Situação',      'type' => 'select',  'required' => false,
+                         'options' => ['' => 'Todas', 'A' => 'Aberto', 'C' => 'Cancelado', 'F' => 'Faturado', 'O' => 'Outros', 'P' => 'Pedido Gerado']],
+                    ],
+                ],
+
+                'packing_list' => [
+                    'label'    => 'Packing List',
+                    'app_name' => 'blank_FORM_PACKING_LIST',
+                    'route'    => 'relatorios.exportacao.packing_list',
+                    'crud'     => true,
+                ],
+
             ],
         ],
 
-        'processos_exportacao' => [
-            'label'    => 'Processos Exportação',
-            'app_name' => 'blank_PROCESSOS_EXPORTACAO',
-            'route'    => 'relatorios.exportacao.processos_exportacao',
-            'grid'     => true,
-            'filters'  => [
-                ['name' => 'empresa',      'label' => 'Empresa',       'type' => 'select',  'required' => true],
-                ['name' => 'num_processo',  'label' => 'Num Processo',  'type' => 'text',    'required' => true, 'placeholder' => 'Ex: 123, 456, 789'],
-                ['name' => 'ano_processo',  'label' => 'Ano Processo',  'type' => 'text',    'required' => true],
-                ['name' => 'dat_inclusao',  'label' => 'Data Inclusão', 'type' => 'date',    'required' => false],
-                ['name' => 'cod_situacao',  'label' => 'Situação',      'type' => 'select',  'required' => false,
-                 'options' => ['' => 'Todas', 'A' => 'Aberto', 'C' => 'Cancelado', 'F' => 'Faturado', 'O' => 'Outros', 'P' => 'Pedido Gerado']],
-            ],
-        ],
+        'financeiro_exp' => [
+            'label'    => 'Financeiro',
+            'children' => [
 
-        'packing_list' => [
-            'label'    => 'Packing List',
-            'app_name' => 'blank_FORM_PACKING_LIST',
-            'route'    => 'relatorios.exportacao.packing_list',
-            'crud'     => true,
+                'credit_note' => [
+                    'label'    => 'Credit Note',
+                    'app_name' => 'blank_CREDIT_NOTE',
+                    'route'    => 'relatorios.exportacao.credit_note',
+                    'filters'  => [
+                        ['name' => 'cod_empresa',  'label' => 'Empresa',       'type' => 'select',  'required' => true],
+                        ['name' => 'num_nc',       'label' => 'Nº NC',         'type' => 'text',    'required' => true, 'placeholder' => 'Ex: 0001'],
+                        ['name' => 'ano_nc',       'label' => 'Ano NC',        'type' => 'text',    'required' => true, 'placeholder' => 'Ex: 2026'],
+                        ['name' => 'dados_banco',  'label' => 'Dados Banco',   'type' => 'radio',   'required' => true,
+                         'options' => ['S' => 'Sim', 'N' => 'Não']],
+                    ],
+                ],
+
+            ],
         ],
     ],
 
