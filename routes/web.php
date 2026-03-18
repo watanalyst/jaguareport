@@ -7,6 +7,7 @@ use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRepresentanteController;
 use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
+use App\Http\Controllers\Relatorios\Exportacao\BaixaDisponivelController;
 use App\Http\Controllers\Relatorios\Exportacao\ComissaoExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\CreditNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\DebitNoteController;
@@ -133,6 +134,14 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('credit-note/gerar', [CreditNoteController::class, 'gerar'])
             ->name('credit_note.gerar')
             ->middleware('report.permission:blank_CREDIT_NOTE');
+
+        // Baixa Disponível
+        Route::get('baixa-disponivel', [BaixaDisponivelController::class, 'index'])
+            ->name('baixa_disponivel')
+            ->middleware('report.permission:blank_BAIXA_DISPONIVEL');
+        Route::get('baixa-disponivel/pesquisar', [BaixaDisponivelController::class, 'pesquisar'])
+            ->name('baixa_disponivel.pesquisar')
+            ->middleware('report.permission:blank_BAIXA_DISPONIVEL');
 
         // Debit Note
         Route::get('debit-note', [DebitNoteController::class, 'index'])
