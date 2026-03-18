@@ -7,6 +7,7 @@ use App\Http\Controllers\Relatorios\Financeiro\ComissaoRedeconomiaController;
 use App\Http\Controllers\Relatorios\Financeiro\ComissaoRepresentanteController;
 use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
+use App\Http\Controllers\Relatorios\Exportacao\ComissaoExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\CreditNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\ProcessosExportacaoController;
 use Illuminate\Support\Facades\Route;
@@ -112,6 +113,17 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
             Route::delete('packing-list/{masterId}/detalhes/{detailId}', [PackingListController::class, 'destroyDetail'])
                 ->name('packing_list.detalhes.destroy');
         });
+
+        // Comissão Exportação
+        Route::get('comissao-exportacao', [ComissaoExportacaoController::class, 'index'])
+            ->name('comissao_exportacao')
+            ->middleware('report.permission:blank_COMISSAO_EXPORTACAO');
+        Route::get('comissao-exportacao/pesquisar', [ComissaoExportacaoController::class, 'pesquisar'])
+            ->name('comissao_exportacao.pesquisar')
+            ->middleware('report.permission:blank_COMISSAO_EXPORTACAO');
+        Route::get('comissao-exportacao/agentes', [ComissaoExportacaoController::class, 'agentes'])
+            ->name('comissao_exportacao.agentes')
+            ->middleware('report.permission:blank_COMISSAO_EXPORTACAO');
 
         // Credit Note
         Route::get('credit-note', [CreditNoteController::class, 'index'])
