@@ -8,6 +8,7 @@ use App\Http\Controllers\Relatorios\Financeiro\ComissaoRepresentanteController;
 use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
 use App\Http\Controllers\Relatorios\Exportacao\BaixaDisponivelController;
+use App\Http\Controllers\Relatorios\Exportacao\BancoCreditNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\ComissaoExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\CreditNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\DebitNoteController;
@@ -142,6 +143,22 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('baixa-disponivel/pesquisar', [BaixaDisponivelController::class, 'pesquisar'])
             ->name('baixa_disponivel.pesquisar')
             ->middleware('report.permission:blank_BAIXA_DISPONIVEL');
+
+        // Banco Credit Note (CRUD)
+        Route::middleware('report.permission:blank_BANCO_CREDITO_NOTE')->group(function () {
+            Route::get('banco-credit-note', [BancoCreditNoteController::class, 'index'])
+                ->name('banco_credit_note');
+            Route::get('banco-credit-note/pesquisar', [BancoCreditNoteController::class, 'pesquisar'])
+                ->name('banco_credit_note.pesquisar');
+            Route::get('banco-credit-note/{id}', [BancoCreditNoteController::class, 'show'])
+                ->name('banco_credit_note.show');
+            Route::post('banco-credit-note', [BancoCreditNoteController::class, 'store'])
+                ->name('banco_credit_note.store');
+            Route::put('banco-credit-note/{id}', [BancoCreditNoteController::class, 'update'])
+                ->name('banco_credit_note.update');
+            Route::delete('banco-credit-note/{id}', [BancoCreditNoteController::class, 'destroy'])
+                ->name('banco_credit_note.destroy');
+        });
 
         // Debit Note
         Route::get('debit-note', [DebitNoteController::class, 'index'])
