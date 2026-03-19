@@ -10,6 +10,7 @@ use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
 use App\Http\Controllers\Relatorios\Exportacao\BaixaDisponivelController;
 use App\Http\Controllers\Relatorios\Exportacao\BancoCreditNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\ComissaoExportacaoController;
+use App\Http\Controllers\Relatorios\Exportacao\NotasFiscaisExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\CreditNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\DebitNoteController;
 use App\Http\Controllers\Relatorios\Exportacao\ProcessosExportacaoController;
@@ -167,6 +168,14 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('debit-note/gerar', [DebitNoteController::class, 'gerar'])
             ->name('debit_note.gerar')
             ->middleware('report.permission:blank_DEBIT_NOTE');
+
+        // Notas Fiscais Exportação
+        Route::get('notas-fiscais-exportacao', [NotasFiscaisExportacaoController::class, 'index'])
+            ->name('notas_fiscais_exportacao')
+            ->middleware('report.permission:blank_NOTAS_FISCAIS_EXPORTACAO');
+        Route::get('notas-fiscais-exportacao/pesquisar', [NotasFiscaisExportacaoController::class, 'pesquisar'])
+            ->name('notas_fiscais_exportacao.pesquisar')
+            ->middleware('report.permission:blank_NOTAS_FISCAIS_EXPORTACAO');
     });
 });
 

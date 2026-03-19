@@ -176,6 +176,21 @@ return [
                     'crud'     => true,
                 ],
 
+                'notas_fiscais_exportacao' => [
+                    'label'    => 'Notas Fiscais Exportação',
+                    'app_name' => 'blank_NOTAS_FISCAIS_EXPORTACAO',
+                    'route'    => 'relatorios.exportacao.notas_fiscais_exportacao',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'cod_empresa',      'label' => 'Empresa',           'type' => 'select',  'required' => false],
+                        ['name' => 'dat_emissao_ini',  'label' => 'Dt Emissão Início', 'type' => 'date',    'required' => false],
+                        ['name' => 'dat_emissao_fim',  'label' => 'Dt Emissão Fim',    'type' => 'date',    'required' => false],
+                        ['name' => 'num_processo',     'label' => 'Num Processo',       'type' => 'text',    'required' => false],
+                        ['name' => 'ano_processo',     'label' => 'Ano Processo',       'type' => 'text',    'required' => false],
+                        ['name' => 'embarque',         'label' => 'Embarque',           'type' => 'text',    'required' => false, 'placeholder' => 'Ex: A, B, C'],
+                    ],
+                ],
+
             ],
         ],
     ],
