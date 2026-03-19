@@ -9,6 +9,7 @@ use App\Http\Controllers\Relatorios\Exportacao\EmbarquesExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\PackingListController;
 use App\Http\Controllers\Relatorios\Exportacao\BaixaDisponivelController;
 use App\Http\Controllers\Relatorios\Exportacao\BancoCreditNoteController;
+use App\Http\Controllers\Relatorios\Exportacao\CambioPeriodoController;
 use App\Http\Controllers\Relatorios\Exportacao\ComissaoExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\NotasFiscaisExportacaoController;
 use App\Http\Controllers\Relatorios\Exportacao\CreditNoteController;
@@ -176,6 +177,14 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
         Route::get('notas-fiscais-exportacao/pesquisar', [NotasFiscaisExportacaoController::class, 'pesquisar'])
             ->name('notas_fiscais_exportacao.pesquisar')
             ->middleware('report.permission:blank_NOTAS_FISCAIS_EXPORTACAO');
+
+        // Câmbio Período
+        Route::get('cambio-periodo', [CambioPeriodoController::class, 'index'])
+            ->name('cambio_periodo')
+            ->middleware('report.permission:blank_CAMBIO_PERIODO');
+        Route::get('cambio-periodo/pesquisar', [CambioPeriodoController::class, 'pesquisar'])
+            ->name('cambio_periodo.pesquisar')
+            ->middleware('report.permission:blank_CAMBIO_PERIODO');
     });
 });
 

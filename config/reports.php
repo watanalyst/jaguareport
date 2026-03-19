@@ -176,6 +176,21 @@ return [
                     'crud'     => true,
                 ],
 
+                'cambio_periodo' => [
+                    'label'    => 'Câmbio Período',
+                    'app_name' => 'blank_CAMBIO_PERIODO',
+                    'route'    => 'relatorios.exportacao.cambio_periodo',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'cod_empresa',    'label' => 'Empresa',           'type' => 'select',  'required' => false],
+                        ['name' => 'dat_cambio_ini', 'label' => 'Dt Câmbio Início',  'type' => 'date',    'required' => false],
+                        ['name' => 'dat_cambio_fim', 'label' => 'Dt Câmbio Fim',     'type' => 'date',    'required' => false],
+                        ['name' => 'num_processo',   'label' => 'Num Processo',       'type' => 'text',    'required' => false],
+                        ['name' => 'ano_processo',   'label' => 'Ano Processo',       'type' => 'text',    'required' => false],
+                        ['name' => 'embarque',       'label' => 'Embarque',           'type' => 'text',    'required' => false, 'placeholder' => 'Ex: A, B, C'],
+                    ],
+                ],
+
                 'notas_fiscais_exportacao' => [
                     'label'    => 'Notas Fiscais Exportação',
                     'app_name' => 'blank_NOTAS_FISCAIS_EXPORTACAO',
