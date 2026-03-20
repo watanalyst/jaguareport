@@ -197,12 +197,27 @@ return [
                     'route'    => 'relatorios.exportacao.notas_fiscais_exportacao',
                     'grid'     => true,
                     'filters'  => [
-                        ['name' => 'cod_empresa',      'label' => 'Empresa',           'type' => 'select',  'required' => false],
-                        ['name' => 'dat_emissao_ini',  'label' => 'Dt Emissão Início', 'type' => 'date',    'required' => false],
-                        ['name' => 'dat_emissao_fim',  'label' => 'Dt Emissão Fim',    'type' => 'date',    'required' => false],
+                        ['name' => 'cod_empresa',      'label' => 'Empresa',           'type' => 'dual-select', 'required' => true],
+                        ['name' => 'dat_emissao_ini',  'label' => 'Dt Emissão Início', 'type' => 'date',    'required' => true],
+                        ['name' => 'dat_emissao_fim',  'label' => 'Dt Emissão Fim',    'type' => 'date',    'required' => true],
                         ['name' => 'num_processo',     'label' => 'Num Processo',       'type' => 'text',    'required' => false],
                         ['name' => 'ano_processo',     'label' => 'Ano Processo',       'type' => 'text',    'required' => false],
                         ['name' => 'embarque',         'label' => 'Embarque',           'type' => 'text',    'required' => false, 'placeholder' => 'Ex: A, B, C'],
+                    ],
+                ],
+
+                'cambio_periodo' => [
+                    'label'    => 'Câmbio Período',
+                    'app_name' => 'blank_CAMBIO_PERIODO',
+                    'route'    => 'relatorios.exportacao.cambio_periodo',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'cod_empresa',    'label' => 'Empresa',           'type' => 'dual-select', 'required' => true],
+                        ['name' => 'dat_cambio_ini', 'label' => 'Dt Câmbio Início',  'type' => 'date',    'required' => true],
+                        ['name' => 'dat_cambio_fim', 'label' => 'Dt Câmbio Fim',     'type' => 'date',    'required' => true],
+                        ['name' => 'num_processo',   'label' => 'Num Processo',       'type' => 'text',    'required' => false],
+                        ['name' => 'ano_processo',   'label' => 'Ano Processo',       'type' => 'text',    'required' => false],
+                        ['name' => 'embarque',       'label' => 'Embarque',           'type' => 'text',    'required' => false, 'placeholder' => 'Ex: A, B, C'],
                     ],
                 ],
 
@@ -220,6 +235,25 @@ return [
 
     'administrativo' => [
         'label' => 'Administrativo',
+
+        'fomento' => [
+            'label'    => 'Fomento',
+            'children' => [
+
+                'mov_dev_terceiros' => [
+                    'label'    => 'Mov. Dev. e Terceiros',
+                    'app_name' => 'blank_MOVIMENTACAO_DEVOLUCAO_TERCEIRO',
+                    'route'    => 'relatorios.administrativo.mov_dev_terceiros',
+                    'grid'     => true,
+                    'filters'  => [
+                        ['name' => 'cod_empresa',  'label' => 'Empresa',           'type' => 'dual-select', 'required' => true],
+                        ['name' => 'dat_movto',    'label' => 'Data Movimento',    'type' => 'date',    'required' => true],
+                        ['name' => 'cod_item',     'label' => 'Cód Item',          'type' => 'text',    'required' => false, 'placeholder' => 'Ex: 123, 456'],
+                    ],
+                ],
+
+            ],
+        ],
     ],
 
     'contabilidade' => [

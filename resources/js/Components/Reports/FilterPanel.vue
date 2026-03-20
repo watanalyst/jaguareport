@@ -1,8 +1,7 @@
 <script setup>
-import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal } from 'btz-components-vue'
+import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal, DualSelect } from 'btz-components-vue'
 import RadioGroup from './RadioGroup.vue'
 import ComboboxInput from './ComboboxInput.vue'
-import DualSelect from './DualSelect.vue'
 import { ArrowDownTrayIcon, TableCellsIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { ref, computed } from 'vue'
 
@@ -37,7 +36,19 @@ const regularFilters = computed(() => props.filters.filter(f => f.type !== 'dual
 const sideFilters = computed(() => dualSelectFilters.value.length ? regularFilters.value.slice(0, 2) : [])
 const bottomFilters = computed(() => dualSelectFilters.value.length ? regularFilters.value.slice(2) : regularFilters.value)
 
+const validationError = ref('')
+
 async function submit(format = 'pdf') {
+  validationError.value = ''
+
+  // Validate required fields before submitting
+  for (const filter of props.filters) {
+    if (filter.required && (!props.form[filter.name] || props.form[filter.name] === '')) {
+      validationError.value = `O campo "${filter.label}" é obrigatório.`
+      return
+    }
+  }
+
   // Search mode: emit values and return
   if (props.mode === 'search') {
     const values = {}
@@ -311,6 +322,11 @@ function clearFilters() {
 
         <InputError :message="form.errors?.[filter.name]" class="mt-1" />
       </div>
+    </div>
+
+    <div v-if="validationError" class="mt-4 flex items-center gap-3 rounded-xl bg-red-50 px-4 py-3">
+      <svg class="h-5 w-5 flex-shrink-0 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+      <p class="text-sm text-red-700">{{ validationError }}</p>
     </div>
 
     <div class="flex items-center gap-3 border-t border-gray-100 pt-4 mt-4">

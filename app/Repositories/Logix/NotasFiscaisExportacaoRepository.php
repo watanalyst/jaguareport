@@ -12,8 +12,19 @@ class NotasFiscaisExportacaoRepository extends BaseLogixRepository
         $bindings = [];
 
         if (! empty($params['cod_empresa'])) {
-            $where[] = 'COD_EMPRESA = :cod_empresa';
-            $bindings['cod_empresa'] = $params['cod_empresa'];
+            $empresas = array_map('trim', explode(',', $params['cod_empresa']));
+            if (count($empresas) === 1) {
+                $where[] = 'COD_EMPRESA = :cod_empresa';
+                $bindings['cod_empresa'] = $empresas[0];
+            } else {
+                $placeholders = [];
+                foreach ($empresas as $i => $emp) {
+                    $key = "empresa_{$i}";
+                    $placeholders[] = ":{$key}";
+                    $bindings[$key] = $emp;
+                }
+                $where[] = 'COD_EMPRESA IN (' . implode(',', $placeholders) . ')';
+            }
         }
 
         if (! empty($params['dat_emissao_ini'])) {
@@ -85,11 +96,6 @@ class NotasFiscaisExportacaoRepository extends BaseLogixRepository
 
     public function distinctEmpresas(): Collection
     {
-        return $this->query("
-            SELECT DISTINCT TRIM(COD_EMPRESA) AS cod_empresa
-            FROM LOGIXPRD.VW_SC_EXP_NOTAS_FISCAIS
-            WHERE COD_EMPRESA IS NOT NULL
-            ORDER BY TRIM(COD_EMPRESA)
-        ")->map(fn ($row) => (object) array_change_key_case((array) $row, CASE_LOWER));
+        return $this->distinctEmpresasFromTable('LOGIXPRD.VW_SC_EXP_NOTAS_FISCAIS');
     }
 }

@@ -11,14 +11,10 @@ use Inertia\Inertia;
 
 class EmbarquesExportacaoController extends Controller
 {
-    private const ALLOWED_EMPRESAS = ['01', '05', '20', '28', '43'];
-
     public function index(EmpresaRepository $empresaRepo)
     {
         try {
-            $empresas = $empresaRepo->all()->filter(
-                fn ($e) => in_array(trim($e->ep), self::ALLOWED_EMPRESAS)
-            )->values();
+            $empresas = $empresaRepo->empresasPorUsuario();
         } catch (\Throwable) {
             $empresas = collect();
         }

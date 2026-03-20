@@ -25,12 +25,8 @@ class PackingListController extends Controller
      */
     public function index(): Response
     {
-        $allowedEmpresas = ['01', '05', '20', '28', '43'];
-
         try {
-            $empresas = $this->empresaRepo->all()->filter(
-                fn ($e) => in_array(trim($e->ep), $allowedEmpresas)
-            )->values();
+            $empresas = $this->empresaRepo->empresasPorUsuario();
         } catch (\Throwable) {
             $empresas = collect();
         }

@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Relatorios\Exportacao;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Relatorios\Exportacao\NotasFiscaisExportacaoPesquisarRequest;
+use App\Repositories\Logix\EmpresaRepository;
 use App\Services\Reports\NotasFiscaisExportacaoService;
 use Inertia\Inertia;
 
 class NotasFiscaisExportacaoController extends Controller
 {
-    public function index(NotasFiscaisExportacaoService $service)
+    public function index(EmpresaRepository $empresaRepo)
     {
         try {
-            $empresas = $service->distinctEmpresas();
+            $empresas = $empresaRepo->empresasPorUsuario();
         } catch (\Throwable) {
             $empresas = collect();
         }

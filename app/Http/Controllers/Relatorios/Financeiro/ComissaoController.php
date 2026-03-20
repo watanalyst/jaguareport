@@ -13,7 +13,7 @@ class ComissaoController extends Controller
     public function index(EmpresaRepository $empresaRepo)
     {
         try {
-            $empresas = $empresaRepo->all();
+            $empresas = $empresaRepo->empresasPorUsuario();
         } catch (\Throwable) {
             $empresas = collect();
         }

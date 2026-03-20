@@ -12,12 +12,8 @@ class DebitNoteController extends Controller
 {
     public function index(EmpresaRepository $empresaRepo)
     {
-        $allowedEmpresas = ['01', '05'];
-
         try {
-            $empresas = $empresaRepo->all()->filter(
-                fn ($e) => in_array(trim($e->ep), $allowedEmpresas)
-            )->values();
+            $empresas = $empresaRepo->empresasPorUsuario();
         } catch (\Throwable) {
             $empresas = collect();
         }

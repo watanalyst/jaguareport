@@ -23,7 +23,6 @@ const lookups = computed(() => ({
   })),
 }))
 
-// Grid state
 const gridData = ref([])
 const searching = ref(false)
 const searchError = ref('')
@@ -42,7 +41,7 @@ async function handleSearch(values) {
 
   try {
     const response = await fetch(
-      `${route('relatorios.exportacao.notas_fiscais_exportacao.pesquisar')}?${params.toString()}`,
+      `${route('relatorios.administrativo.mov_dev_terceiros.pesquisar')}?${params.toString()}`,
       { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
     )
 
@@ -94,7 +93,9 @@ async function handleSearch(values) {
         :columns="columns"
         :data="gridData"
         :page-size="25"
-        export-filename="notas-fiscais-exportacao"
+        export-filename="mov-dev-terceiros"
+        :group-by="['cod_empresa', 'dat_movto', 'cod_item']"
+        :sum-columns="['saidas_estoque', 'saidas_nf', 'devol_estoque', 'devol_nf', 'refat_estoque', 'refat_nf', 'baixa_estoque', 'baixa_nf', 'rem_terc_estoque', 'rem_terc_nf', 'ret_terc_estoque', 'ret_terc_nf']"
       />
     </div>
 

@@ -19,12 +19,8 @@ class BancoCreditNoteController extends Controller
 
     public function index()
     {
-        $allowedEmpresas = ['01', '05'];
-
         try {
-            $empresas = $this->empresaRepo->all()->filter(
-                fn ($e) => in_array(trim($e->ep), $allowedEmpresas)
-            )->values();
+            $empresas = $this->empresaRepo->empresasPorUsuario();
         } catch (\Throwable) {
             $empresas = collect();
         }
