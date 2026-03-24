@@ -356,6 +356,7 @@ function clearFilters() {
         <SuccessButton
           v-if="csv"
           type="submit"
+          variant="outline"
           @click="activeFormat = 'csv'"
           :disabled="loading"
         >
