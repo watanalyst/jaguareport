@@ -1,7 +1,5 @@
 <script setup>
-import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal, DualSelect } from 'btz-components-vue'
-import RadioGroup from './RadioGroup.vue'
-import ComboboxInput from './ComboboxInput.vue'
+import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal, DualSelect, RadioGroup, ComboboxInput } from 'btz-components-vue'
 import { ArrowDownTrayIcon, TableCellsIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { ref, computed } from 'vue'
 
@@ -307,6 +305,7 @@ function clearFilters() {
           :options="lookups[filter.name] || []"
           :placeholder="filter.placeholder || 'Pesquisar...'"
           :input-class="inputClasses + ' pr-12'"
+          uppercase
         />
 
         <!-- Text (default) -->
