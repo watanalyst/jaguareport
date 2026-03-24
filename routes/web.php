@@ -186,6 +186,17 @@ Route::prefix('relatorios')->name('relatorios.')->middleware('sc.auth')->group(f
             ->name('cambio_periodo.pesquisar')
             ->middleware('report.permission:blank_CAMBIO_PERIODO');
     });
+
+    // Administrativo
+    Route::prefix('administrativo')->name('administrativo.')->group(function () {
+
+        Route::get('mov-dev-terceiros', [\App\Http\Controllers\Relatorios\Administrativo\MovDevTerceirosController::class, 'index'])
+            ->name('mov_dev_terceiros')
+            ->middleware('report.permission:blank_MOVIMENTACAO_DEVOLUCAO_TERCEIRO');
+        Route::get('mov-dev-terceiros/pesquisar', [\App\Http\Controllers\Relatorios\Administrativo\MovDevTerceirosController::class, 'pesquisar'])
+            ->name('mov_dev_terceiros.pesquisar')
+            ->middleware('report.permission:blank_MOVIMENTACAO_DEVOLUCAO_TERCEIRO');
+    });
 });
 
 require __DIR__.'/auth.php';
