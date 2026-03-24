@@ -1,5 +1,5 @@
 <script setup>
-import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal, DualSelect, RadioGroup, ComboboxInput } from 'btz-components-vue'
+import { InputLabel, InputError, PrimaryButton, SuccessButton, SecondaryButton, StatusModal, DualSelect, RadioGroup, ComboboxInput } from '@desenvolvimento/btz-components-vue'
 import { ArrowDownTrayIcon, TableCellsIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { ref, computed } from 'vue'
 

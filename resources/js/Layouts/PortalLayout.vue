@@ -1,6 +1,6 @@
 <script setup>
 import { Link, usePage, router } from '@inertiajs/vue3'
-import { DashboardLayout } from 'btz-components-vue'
+import { DashboardLayout } from '@desenvolvimento/btz-components-vue'
 import { computed } from 'vue'
 
 const page = usePage()

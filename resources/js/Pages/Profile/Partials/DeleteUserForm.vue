@@ -1,6 +1,6 @@
 <script setup>
 import DangerButton from '@/Components/DangerButton.vue';
-import { InputError, InputLabel, Modal, SecondaryButton, TextInput } from 'btz-components-vue';
+import { InputError, InputLabel, Modal, SecondaryButton, TextInput } from '@desenvolvimento/btz-components-vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 

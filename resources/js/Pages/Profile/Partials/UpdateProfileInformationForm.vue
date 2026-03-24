@@ -1,5 +1,5 @@
 <script setup>
-import { InputError, InputLabel, PrimaryButton, TextInput } from 'btz-components-vue';
+import { InputError, InputLabel, PrimaryButton, TextInput } from '@desenvolvimento/btz-components-vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 defineProps({

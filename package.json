@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
-    "btz-components-vue": "file:../btz-components-vue",
+    "@desenvolvimento/btz-components-vue": "^2.1.0",
     "xlsx": "^0.18.5",
     "ziggy-js": "^2.6.1"
   }

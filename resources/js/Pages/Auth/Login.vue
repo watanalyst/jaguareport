@@ -1,7 +1,7 @@
 <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { InputError, InputLabel, PrimaryButton, TextInput } from 'btz-components-vue';
+import { InputError, InputLabel, PrimaryButton, TextInput } from '@desenvolvimento/btz-components-vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({

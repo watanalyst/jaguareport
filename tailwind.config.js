@@ -6,7 +6,7 @@ export default {
   content: [
     './resources/views/**/*.blade.php',
     './resources/js/**/*.vue',
-    './node_modules/btz-components-vue/**/*.vue',
+    './node_modules/@desenvolvimento/btz-components-vue/**/*.vue',
   ],
   theme: {
     extend: {
