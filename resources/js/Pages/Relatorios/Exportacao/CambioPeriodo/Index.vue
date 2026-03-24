@@ -2,7 +2,7 @@
 import { reactive, ref, computed } from 'vue'
 import ReportPageLayout from '@/Components/Reports/ReportPageLayout.vue'
 import FilterPanel from '@/Components/Reports/FilterPanel.vue'
-import GenericDataGrid from '@/Components/Reports/GenericDataGrid.vue'
+import { GenericDataGrid } from 'btz-components-vue'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({

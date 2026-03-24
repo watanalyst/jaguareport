@@ -19,12 +19,9 @@ class MovDevTerceirosController extends Controller
         }
 
         $columns = [
-            ['key' => 'cod_empresa',      'label' => 'Emp',              'sortable' => true, 'filterable' => true, 'align' => 'center'],
-            ['key' => 'cod_item',         'label' => 'Cód Item',         'sortable' => true, 'filterable' => true],
-            ['key' => 'origem',           'label' => 'Origem',           'sortable' => true, 'filterable' => true],
+            ['key' => 'cod_empresa',      'label' => 'Emp',              'sortable' => true, 'filterable' => true],
             ['key' => 'dat_movto',        'label' => 'Dat Movto',        'sortable' => true, 'type' => 'date'],
-            ['key' => 'num_docum',        'label' => 'Num Docum',        'sortable' => true, 'filterable' => true, 'align' => 'center'],
-            ['key' => 'num_seq',          'label' => 'Num Seq',          'sortable' => true, 'align' => 'center'],
+            ['key' => 'cod_item',         'label' => 'Cód Item',         'sortable' => true, 'filterable' => true],
             ['key' => 'saidas_estoque',   'label' => 'Saídas Estoque',   'sortable' => true, 'type' => 'currency'],
             ['key' => 'saidas_nf',        'label' => 'Saídas NF',        'sortable' => true, 'type' => 'currency'],
             ['key' => 'devol_estoque',    'label' => 'Devol Estoque',    'sortable' => true, 'type' => 'currency'],

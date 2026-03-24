@@ -2,7 +2,7 @@
 import { reactive, ref, computed } from 'vue'
 import ReportPageLayout from '@/Components/Reports/ReportPageLayout.vue'
 import FilterPanel from '@/Components/Reports/FilterPanel.vue'
-import GenericDataGrid from '@/Components/Reports/GenericDataGrid.vue'
+import { GenericDataGrid } from 'btz-components-vue'
 import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
@@ -27,6 +27,58 @@ const gridData = ref([])
 const searching = ref(false)
 const searchError = ref('')
 const hasSearched = ref(false)
+
+// Campos agrupáveis (não numéricos)
+const groupableColumns = computed(() =>
+  props.columns.filter(c => !['number', 'currency'].includes(c.type))
+)
+const sumFields = computed(() =>
+  props.columns.filter(c => c.type === 'currency').map(c => c.key)
+)
+
+// Grid mode
+const gridMode = ref('normal')
+const selectedGroupBy = ref([])
+const showGroupPanel = ref(false)
+
+const activeGroupBy = computed(() => gridMode.value === 'normal' ? [] : selectedGroupBy.value)
+const activeGroupMode = computed(() => gridMode.value === 'quebra' ? 'quebra' : 'resumo')
+
+function toggleGroupColumn(key) {
+  const idx = selectedGroupBy.value.indexOf(key)
+  if (idx >= 0) selectedGroupBy.value.splice(idx, 1)
+  else selectedGroupBy.value.push(key)
+}
+
+function moveUp(idx) {
+  if (idx <= 0) return
+  const arr = selectedGroupBy.value
+  ;[arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]]
+}
+
+function moveDown(idx) {
+  const arr = selectedGroupBy.value
+  if (idx >= arr.length - 1) return
+  ;[arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]]
+}
+
+function setMode(mode) {
+  if (mode === 'normal') {
+    gridMode.value = 'normal'
+    showGroupPanel.value = false
+  } else {
+    gridMode.value = mode
+    if (!selectedGroupBy.value.length) {
+      showGroupPanel.value = true
+    }
+  }
+}
+
+function clearGrouping() {
+  selectedGroupBy.value = []
+  gridMode.value = 'normal'
+  showGroupPanel.value = false
+}
 
 async function handleSearch(values) {
   searching.value = true
@@ -89,13 +141,65 @@ async function handleSearch(values) {
     </div>
 
     <div v-if="!searching && gridData.length > 0" class="mt-6">
+      <!-- Mode selector -->
+      <div class="mb-3 flex items-center gap-3 flex-wrap">
+        <div class="inline-flex rounded-lg border border-gray-200 bg-white p-0.5">
+          <button
+            v-for="mode in [{ key: 'normal', label: 'Detalhado' }, { key: 'resumo', label: 'Resumo' }, { key: 'quebra', label: 'Quebra' }]"
+            :key="mode.key"
+            type="button"
+            @click="setMode(mode.key)"
+            class="px-3 py-1.5 text-xs font-semibold rounded-md transition-all"
+            :class="gridMode === mode.key ? 'bg-blue-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'"
+          >
+            {{ mode.label }}
+          </button>
+        </div>
+
+        <button v-if="selectedGroupBy.length || gridMode !== 'normal'" type="button" @click="clearGrouping"
+          class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-lg border border-red-200 bg-white text-red-600 hover:bg-red-50 transition-colors">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+          Limpar
+        </button>
+      </div>
+
+      <!-- Group fields panel -->
+      <div v-if="showGroupPanel && gridMode !== 'normal'" class="mb-4 rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
+        <p class="text-xs font-semibold text-gray-500 mb-2">Selecione os campos para agrupar (clique para adicionar/remover):</p>
+        <div class="flex flex-wrap gap-2">
+          <button
+            v-for="col in groupableColumns"
+            :key="col.key"
+            type="button"
+            @click="toggleGroupColumn(col.key)"
+            class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-md border transition-colors"
+            :class="selectedGroupBy.includes(col.key) ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400 hover:text-blue-600'"
+          >
+            {{ col.label }}
+            <span v-if="selectedGroupBy.includes(col.key)" class="ml-0.5 text-blue-200 font-bold">{{ selectedGroupBy.indexOf(col.key) + 1 }}</span>
+          </button>
+        </div>
+        <div v-if="selectedGroupBy.length > 1" class="mt-3 flex items-center gap-2">
+          <span class="text-xs text-gray-400">Ordem:</span>
+          <div v-for="(key, idx) in selectedGroupBy" :key="key" class="inline-flex items-center gap-0.5 text-xs">
+            <span class="font-semibold text-blue-700">{{ groupableColumns.find(c => c.key === key)?.label }}</span>
+            <button v-if="idx > 0" @click="moveUp(idx)" class="text-gray-400 hover:text-blue-600">↑</button>
+            <button v-if="idx < selectedGroupBy.length - 1" @click="moveDown(idx)" class="text-gray-400 hover:text-blue-600">↓</button>
+            <span v-if="idx < selectedGroupBy.length - 1" class="mx-1 text-gray-300">›</span>
+          </div>
+        </div>
+      </div>
+
       <GenericDataGrid
         :columns="columns"
         :data="gridData"
-        :page-size="25"
+        :page-size="100"
         export-filename="mov-dev-terceiros"
-        :group-by="['cod_empresa', 'dat_movto', 'cod_item']"
-        :sum-columns="['saidas_estoque', 'saidas_nf', 'devol_estoque', 'devol_nf', 'refat_estoque', 'refat_nf', 'baixa_estoque', 'baixa_nf', 'rem_terc_estoque', 'rem_terc_nf', 'ret_terc_estoque', 'ret_terc_nf']"
+        :group-by="activeGroupBy"
+        :sum-columns="sumFields"
+        :group-mode="activeGroupMode"
+        :show-group-toggle="false"
+        max-height="70vh"
       />
     </div>
 

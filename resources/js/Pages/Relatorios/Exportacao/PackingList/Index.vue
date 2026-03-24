@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import ReportPageLayout from '@/Components/Reports/ReportPageLayout.vue'
-import GenericDataGrid from '@/Components/Reports/GenericDataGrid.vue'
+import { GenericDataGrid } from 'btz-components-vue'
 import { PrimaryButton, SecondaryButton, TextInput, InputLabel, InputError, Modal, ConfirmModal, StatusModal } from 'btz-components-vue'
 import { PlusIcon, PencilSquareIcon, TrashIcon, QueueListIcon } from '@heroicons/vue/24/outline'
 

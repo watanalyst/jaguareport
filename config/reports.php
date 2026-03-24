@@ -246,9 +246,10 @@ return [
                     'route'    => 'relatorios.administrativo.mov_dev_terceiros',
                     'grid'     => true,
                     'filters'  => [
-                        ['name' => 'cod_empresa',  'label' => 'Empresa',           'type' => 'dual-select', 'required' => true],
-                        ['name' => 'dat_movto',    'label' => 'Data Movimento',    'type' => 'date',    'required' => true],
-                        ['name' => 'cod_item',     'label' => 'Cód Item',          'type' => 'text',    'required' => false, 'placeholder' => 'Ex: 123, 456'],
+                        ['name' => 'cod_empresa',      'label' => 'Empresa',            'type' => 'dual-select', 'required' => true],
+                        ['name' => 'dat_movto_ini',   'label' => 'Data Movimento De',  'type' => 'date',    'required' => true],
+                        ['name' => 'dat_movto_fim',   'label' => 'Data Movimento Até', 'type' => 'date',    'required' => true],
+                        ['name' => 'cod_item',         'label' => 'Cód Item',           'type' => 'text',    'required' => false, 'placeholder' => 'Ex: 123, 456'],
                     ],
                 ],
 
